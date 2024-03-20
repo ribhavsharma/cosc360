@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>Home</title>
-    <link rel="stylesheet" href="./css/write.css" />
+    <link rel="stylesheet" href="../public/assets/css/write.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -15,11 +15,11 @@
   <body>
     <header>
       <nav>
-        <div class="logo" href="./index.php">Logo</div>
+        <a class="logo" href="./">Logo</a>
         <ul class="nav-links">
-          <li><a href="./index.php">Read</a></li>
-          <li><a href="#">Write</a></li>
-          <a class="circle" href="./user.php"></a>
+          <li><a href="./">Read</a></li>
+          <li><a href="./write">Write</a></li>
+          <a class="circle" href="./user"></a>
           <li><a href="./user.php">Om Mistry</a></li>
         </ul>
       </nav>

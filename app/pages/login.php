@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="./css/login.css" />
+    <link rel="stylesheet" href="../public/assets/css/login.css" />
 </head>
 
 <body>   
     <header>
         <nav>
-            <a class="logo" href="./index.php">Logo</a>
+            <a class="logo" href="./">Logo</a>
             <ul class="nav-links">
-                <li><a href="#">Read</a></li>
-                <li><a href="#">Write</a></li>
-                <a class="circle" href="./user.php"></a>
-                <li><a href="./user.php">Om Mistry</a></li>
+                <li><a href="./">Read</a></li>
+                <li><a href="./write">Write</a></li>
+                <a class="circle" href="./user"></a>
+                <li><a href="./user">Om Mistry</a></li>
             </ul>
         </nav>
     </header>    
