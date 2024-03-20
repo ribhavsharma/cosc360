@@ -7,15 +7,15 @@
     <link rel="stylesheet" href="./css/login.css" />
 </head>
 
-<body>
+<body>   
     <header>
         <nav>
-            <a class="logo" href="./index.html">Logo</a>
+            <a class="logo" href="./index.php">Logo</a>
             <ul class="nav-links">
                 <li><a href="#">Read</a></li>
                 <li><a href="#">Write</a></li>
-                <a class="circle" href="./user.html"></a>
-                <li><a href="./user.html">Om Mistry</a></li>
+                <a class="circle" href="./user.php"></a>
+                <li><a href="./user.php">Om Mistry</a></li>
             </ul>
         </nav>
     </header>    
@@ -37,8 +37,8 @@
                   </div>
                   <div class="flip-card__back">
                      <div class="title">Sign up</div>
-                     <form class="flip-card__form" action="">
-                        <input class="flip-card__input" placeholder="Name" type="name">
+                     <form class="flip-card__form" action="signup.php"  method="POST">
+                        <input class="flip-card__input" name="username" placeholder="Username" type="text">
                         <input class="flip-card__input" name="email" placeholder="Email" type="email">
                         <input class="flip-card__input" name="password" placeholder="Password" type="password">
                         <button class="flip-card__btn">Sign up</button>

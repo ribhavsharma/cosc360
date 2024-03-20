@@ -15,12 +15,12 @@
   <body>
     <header>
       <nav>
-        <div class="logo" href="./index.html">Logo</div>
+        <div class="logo" href="./index.php">Logo</div>
         <ul class="nav-links">
-          <li><a href="./index.html">Read</a></li>
+          <li><a href="./index.php">Read</a></li>
           <li><a href="#">Write</a></li>
-          <a class="circle" href="./user.html"></a>
-          <li><a href="./user.html">Om Mistry</a></li>
+          <a class="circle" href="./user.php"></a>
+          <li><a href="./user.php">Om Mistry</a></li>
         </ul>
       </nav>
     </header>

@@ -9,12 +9,12 @@
 <body>
     <header>
         <nav>
-            <div class="logo" href="./index.html">Logo</div>
+            <div class="logo" href="./index.php">Logo</div>
             <ul class="nav-links">
                 <li><a href="#">Read</a></li>
-                <li><a href="./write.html">Write</a></li>
-                <a class="circle" href="./user.html"></a>
-                <li><a href="./user.html">Om Mistry</a></li>
+                <li><a href="./write.php">Write</a></li>
+                <a class="circle" href="./user.php"></a>
+                <li><a href="./user.php">Om Mistry</a></li>
             </ul>
         </nav>
     </header>
@@ -24,7 +24,7 @@
             vulputate sapien, quis sodales leo. Aliquam vel est massa. Etiam sodales ornare massa non ullamcorper. Morbi
             venenatis imperdiet rhoncus. Cras vulputate ligula eu leo tincidunt, quis sodales lectus scelerisque. In
             laoreet, arcu et varius blandit, sem ex hendrerit libero, vel hendrerit tellus quam id quam.</p>
-        <button class="CTA" onclick="window.location.href='login.html'">Get Started</button>
+        <button class="CTA" onclick="window.location.href='login.php'">Get Started</button>
     </section>
 
     <section>
