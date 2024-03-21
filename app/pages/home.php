@@ -16,8 +16,16 @@
             <ul class="nav-links">
                 <li><a href="#">Read</a></li>
                 <li><a href="./write">Write</a></li>
-                <a class="circle" href="./user"></a>
-                <li><a href="./user">Om Mistry</a></li>
+                <?php
+                if (!empty($_SESSION['username'])) {
+                    echo '<a class="circle" href="./user"></a>';
+                    echo '<li><a href="./user">' . $_SESSION['USER'] .'</a></li>';
+                    echo '<li><a href="./logout">Sign Out</a></li>';
+                } else {
+                    echo $_SESSION[0];
+                    echo '<li><a href="./login">Log In</a></;li>';
+                }
+                ?>
             </ul>
         </nav>
     </header>
