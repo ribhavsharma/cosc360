@@ -69,6 +69,17 @@ if($action == 'add'){ // add new user
             }else if($_POST['password'] !== $_POST['retype_password']){
                 $errors['password'] = "Passwords do not match";
             }
+
+            //validating image
+            $allowed = ['image/jpeg', 'image/png', 'image/webp'];
+            if(!empty($_FILES['image']['name'])){
+                if(in_array($_FILES['image']['type'], $allowed)){
+                    $errors['image'] = "Image format not supported";
+                }else{
+                    $destination = $folder.time().$_FILES['image']['name']
+                    move_uploaded_file($_FILES['image']['tmp_name'], $destination);
+                }
+            }
     
             if(empty($errors)){
                 //save to database

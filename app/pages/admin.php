@@ -15,7 +15,11 @@
     }
 
     if($section == 'users'){
-        require_once "../app/pages/admin/-controller.php";
+        require_once "../app/pages/admin/users-controller.php";
+    }else if($section == 'categories'){
+        require_once "../app/pages/admin/categories-controller.php";
+    }else if($section == 'posts'){
+        require_once "../app/pages/admin/posts-controller.php";
     }
 
     
