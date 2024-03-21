@@ -163,6 +163,62 @@ function resize_image($filename, $maxSize = 1000){
     }
 }
 
+function removeImagesFromContent($content, $folder = 'uploads/'){
+
+	preg_match_all("/<img[^>]+/", $content, $matches);
+
+	if(is_array($matches[0]) && count($matches[0]) > 0){
+		foreach ($matches[0] as $img) {
+			if(!strstr($img, "data:")){
+				continue;
+			}
+
+			preg_match('/src="[^"]+/', $img, $match);
+			$parts = explode("base64,", $match[0]);
+
+			preg_match('/data-filename="[^"]+/', $img, $file_match);
+
+			$filename = $folder.str_replace('data-filename="', "", $file_match[0]);
+
+			file_put_contents($filename, base64_decode($parts[1]));
+			$content = str_replace($match[0], 'src="'.$filename, $content);
+		}
+	}
+	return $content;
+}
+
+
+function addRootToImage($content){
+	preg_match_all("/<img[^>]+/", $content, $matches);
+
+	if(is_array($matches[0]) && count($matches[0]) > 0)
+	{
+		foreach ($matches[0] as $img) {
+
+			preg_match('/src="[^"]+/', $img, $match);
+			$new_img = str_replace('src="', 'src="'.ROOT."/", $img);
+			$content = str_replace($img, $new_img, $content);
+
+		}
+	}
+	return $content;
+}
+
+function removeRootFromImage($content){
+	$content = str_replace(ROOT, "", $content);
+	return $content;
+}
+
+function user($key = ""){
+	if(empty($key))
+		return $_SESSION['USER'];
+
+	if(!empty($_SESSION['USER'][$key]))
+		return $_SESSION['USER'][$key];
+
+	return '';
+}
+
 function get_image($file){
 	$file = $file ?? '';
 	if(file_exists($file))
