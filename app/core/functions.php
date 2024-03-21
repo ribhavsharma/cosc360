@@ -70,6 +70,80 @@ function str_to_url($url){
    return $url;
 }
 
+function get_paginations(){
+    // set pagination variables 
+    $page_num = $_GET['page'] ?? 1;
+    $page_num = empty($page_num) ? 1 : (int)$page_num;
+    $page_num = $page_num < 1 ? 1 : $page_num;
+
+    $current = $_GET['url'] ?? 'home';
+    $current = ROOT ."/". $current;
+    $query_string = "";
+
+    foreach($_GET as $key => $value){
+        if($key != 'url'){
+            $query_string .= "&".$key."=".$value;
+        }
+    }
+
+    if(!strstr($query_string, "page=")){
+        $query_string .= "&page=".$page_num;
+    }
+    $query_string = trim($query_string, "&");
+    $current .= "?".$query_string;
+
+    // Setting the regular expression to match any string that is encountered 
+    // Using .* for more than 1 character 
+
+    $current = preg_replace("/page=.*/", "page=".$page_num, $current);
+    $first = preg_replace("/page=.*/", "page=1", $current);
+    $next = preg_replace("/page=.*/", "page=".($page_num+1), $current);
+    $prev_page_num = $page_num < 2 ? 1 : $page_num - 1;
+    $prev = preg_replace("/page=.*/", "page=".$prev_page_num, $current);
+
+    $result = [
+		'current page'	=>$current,
+		'next page'		=>$next,
+		'prev page'		=>$prev,
+		'first page'	=>$first,
+        'page number'	=>$page_num
+	];
+
+    return $result;
+    
+}
+
+function resize_image($filename, $maxSize = 1000){
+    if(file_exists($filename)){
+        $fileType = mime_content_type($filename);
+        switch($fileType){
+            case "image/jpeg":
+                $image = imagecreatefromjpeg($filename);
+                break;
+            case "image/png":
+                $image = imagecreatefrompng($filename);
+                break;
+            case "image/webp":
+                $image = imagecreatefromwebp($filename);
+                break;
+            case "image/gif":
+                $image = imagecreatefromgif($filename);
+                break;   
+            default:
+                return;
+                break;
+        }
+        $srcWidth = imagesx($image);
+        $srcHeight = imagesy($image);
+
+        if($srcWidth > $srcHeight){
+            $destinationWidth = $maxSize;
+            $destinationHeight = ($srcHeight / $srcWidth) * $maxSize;
+        }
+
+    }
+}
+
 function get_image($file){
 	$file = $file ?? '';
 	if(file_exists($file))
@@ -77,49 +151,7 @@ function get_image($file){
 		return ROOT.'/'.$file;
 	}
 
-	return ROOT.'/assets/images/placeholder.jpg';
-}
-
-function get_pagination_vars(){
-
-	/** set pagination vars **/
-	$page_number = $_GET['page'] ?? 1;
-	$page_number = empty($page_number) ? 1 : (int)$page_number;
-	$page_number = $page_number < 1 ? 1 : $page_number;
-
-	$current_link = $_GET['url'] ?? 'home';
-	$current_link = ROOT . "/" . $current_link;
-	$query_string = "";
-
-	foreach ($_GET as $key => $value)
-	{
-		if($key != 'url')
-			$query_string .= "&".$key."=".$value;
-	}
-
-	if(!strstr($query_string, "page="))
-	{
-		$query_string .= "&page=".$page_number;
-	}
-
-	$query_string = trim($query_string,"&");
-	$current_link .= "?".$query_string;
-
-	$current_link = preg_replace("/page=.*/", "page=".$page_number, $current_link);
-	$next_link = preg_replace("/page=.*/", "page=".($page_number+1), $current_link);
-	$first_link = preg_replace("/page=.*/", "page=1", $current_link);
-	$prev_page_number = $page_number < 2 ? 1 : $page_number - 1;
-	$prev_link = preg_replace("/page=.*/", "page=".$prev_page_number, $current_link);
-
-	$result = [
-		'current_link'	=>$current_link,
-		'next_link'		=>$next_link,
-		'prev_link'		=>$prev_link,
-		'first_link'	=>$first_link,
-		'page_number'	=>$page_number,
-	];
-
-	return $result;
+	return ROOT.'/assets/images/noImage.png';
 }
 
 // create_tables();

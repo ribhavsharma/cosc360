@@ -33,7 +33,14 @@ if($action == 'add'){ // add new user
             $data['email'] = $_POST['email'];
             $data['role'] = "user";
             $data['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
             $query = "insert into users (username,email,password,role) values (:username,:email,:password,:role)";
+
+            if(!empty($destination)){
+              $data['image']     = $destination;
+              $query = "insert into users (username,email,password,role,image) values (:username,:email,:password,:role,:image)";
+            }
+
             query($query, $data);
             $_SESSION['username'] = $data['username'];
             redirect('./admin/users');
@@ -73,10 +80,14 @@ if($action == 'add'){ // add new user
             //validating image
             $allowed = ['image/jpeg', 'image/png', 'image/webp'];
             if(!empty($_FILES['image']['name'])){
-                if(in_array($_FILES['image']['type'], $allowed)){
+                if(!in_array($_FILES['image']['type'], $allowed)){
                     $errors['image'] = "Image format not supported";
                 }else{
-                    $destination = $folder.time().$_FILES['image']['name']
+                    $folder ="./uploads/";
+                    if(!file_exists($folder)){
+                        mkdir($folder, 0777, true);
+                    }
+                    $destination = $folder.time().$_FILES['image']['name'];
                     move_uploaded_file($_FILES['image']['tmp_name'], $destination);
                 }
             }
@@ -89,12 +100,21 @@ if($action == 'add'){ // add new user
                 $data['role'] = $row['role'];
                 $data['id'] = $id;
 
-                if(empty($_POST['password'])){
-                    $query = "update users set username = :username, email = :email, role = :role where id = :id limit 1";
-                }else{
-                    $data['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                    $query = "update users set username = :username, email = :email, password = :password, role = :role where id = :id limit 1";
+                $password_str = '';
+                $image_str = '';
+
+                if(!empty($_POST['password'])){
+                  $data['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                  $password_str = "password = :password, ";
                 }
+
+                if(!empty($destination)){
+                  $image_str = "image = :image, ";
+                  $data['image']       = $destination;
+                }
+
+                $query = "update users set username = :username, email = :email, $password_str $image_str role = :role where id = :id limit 1";
+
                 query($query, $data);
                 $_SESSION['username'] = $data['username'];
                 redirect('./admin/users');
@@ -117,6 +137,10 @@ if($action == 'add'){ // add new user
                 $query = "delete from users where id = :id limit 1";
                 query($query, $data);
                 $_SESSION['username'] = $data['username'];
+
+                if(file_exists($row['image']))
+                    unlink($row['image']);
+                
                 redirect('./admin/users');
             }
         }
