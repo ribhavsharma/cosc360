@@ -1,4 +1,6 @@
 <?php
+   session_start();
+
    if(!empty($_POST)){
       //Signup form validation 
       $errors = [];
@@ -34,7 +36,8 @@
          $data['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
          $query = "insert into users (username,email,password,role) values (:username,:email,:password,:role)";
          query($query, $data);
-         redirect('./login');
+         $_SESSION['username'] = $data['username'];
+         redirect('./home');
       }
    }
 
@@ -50,6 +53,7 @@
          if(password_verify($_POST['password'], $result[0]['password'])){
             //grant access
             authenticate($result[0]);
+            $_SESSION['username'] = $result[0]['username'];
             redirect('./home');
 
          }else{

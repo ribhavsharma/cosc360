@@ -13,8 +13,16 @@
 				<ul class="nav-links">
 					<li><a href="./">Read</a></li>
 					<li><a href="./write">Write</a></li>
-					<a class="circle" href="./user"></a>
-					<li><a href="./user">Om Mistry</a></li>
+					<?php
+					session_start();
+					if (isset($_SESSION['username'])) {
+						echo '<a class="circle" href="./user"></a>';
+						echo '<li><a href="./user">' . $_SESSION['username'] .'</a></li>';
+						echo '<li><a href="./logout">Sign Out</a></li>';
+					} else {
+						echo '<li><a href="./login">Log In</a></;li>';
+					}
+					?>
 				</ul>
 			</nav>
 	</header>
@@ -22,9 +30,7 @@
 	<div class="user-page">
 			<div class="user-and-articles">
 				<div class="user">
-					<h1>
-						Om Mistry
-					</h1>
+					<?php echo '<h1>'.$_SESSION['username'].'</h1>'?>
 					<ul class="user-links">
 						<li><a href="#">Home</a></li>
 						<li><a href="#">About</a></li>
@@ -36,7 +42,7 @@
 						<div class="text">
 							<div class="name">
 								<a href="#"></a>
-								<h5>Om Mistry</h5>
+								<?php echo '<h5>'.$_SESSION['username'].'</h5>'?>
 							</div>
 							<article>
 								<h4>Designing for Apple Vision Pro: Lessons Learned from Puzzling Places</h4 >
@@ -63,7 +69,7 @@
 			<div class="profile">
 				<a class="circle" href="#"></a>
 				<div class="name-and-edit">
-					<h3>Om Mistry</h3>
+					<?php echo '<h3>'.$_SESSION['username'].'</h3>'?>
 					<a href="#">Edit profile</a>
 				</div>
 			</div>
