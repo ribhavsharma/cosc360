@@ -26,12 +26,29 @@ if($action == 'add'){ // add new user
             $errors['password'] = "A password must be at least 8 characters or more";
         }
 
+        $allowed = ['image/jpeg','image/png','image/webp'];
+        if(!empty($_FILES['image']['name'])){
+            $destination = "";
+            if(!in_array($_FILES['image']['type'], $allowed)){
+                $errors['image'] = "Image format not supported";
+            }else{
+                $folder = "uploads/";
+                if(!file_exists($folder)){
+                    mkdir($folder, 0777, true);
+                }
+
+                $destination = $folder . time() . $_FILES['image']['name'];
+                move_uploaded_file($_FILES['image']['tmp_name'], $destination);
+                resize_image($destination);
+            }
+        }
+
         if(empty($errors)){
             //save to database
             $data = [];
             $data['username'] = $_POST['username'];
             $data['email'] = $_POST['email'];
-            $data['role'] = "user";
+            $data['role'] = $_POST['role'];
             $data['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
             $query = "insert into users (username,email,password,role) values (:username,:email,:password,:role)";
@@ -89,6 +106,7 @@ if($action == 'add'){ // add new user
                     }
                     $destination = $folder.time().$_FILES['image']['name'];
                     move_uploaded_file($_FILES['image']['tmp_name'], $destination);
+                    resize_image($destination);
                 }
             }
     
@@ -97,9 +115,9 @@ if($action == 'add'){ // add new user
                 $data = [];
                 $data['username'] = $_POST['username'];
                 $data['email'] = $_POST['email'];
-                $data['role'] = $row['role'];
+                $data['role'] = $_POST['role'];
                 $data['id'] = $id;
-
+ 
                 $password_str = '';
                 $image_str = '';
 

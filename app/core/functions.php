@@ -137,9 +137,28 @@ function resize_image($filename, $maxSize = 1000){
         $srcHeight = imagesy($image);
 
         if($srcWidth > $srcHeight){
+            if($srcWidth < $maxSize){
+                $maxSize = $srcWidth;
+            }
+
             $destinationWidth = $maxSize;
             $destinationHeight = ($srcHeight / $srcWidth) * $maxSize;
+        }else{
+            if($srcHeight < $maxSize){
+                $maxSize = $srcHeight;
+            }
+
+            $destinationHeight = $maxSize;
+            $destinationWidth = ($srcWidth / $srcHeight) * $maxSize;
         }
+
+        $destinationWidth = round($destinationWidth);
+        $destinationHeight = round($destinationHeight);
+
+        $imageNew = imagecreatetruecolor($destinationWidth, $destinationHeight);
+        imagecopyresampled($imageNew, $image, 0, 0, 0, 0, $destinationWidth, $destinationHeight, $srcWidth, $srcHeight);
+        
+        imagejpeg($imageNew, $filename, 100);
 
     }
 }

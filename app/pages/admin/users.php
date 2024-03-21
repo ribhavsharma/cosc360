@@ -48,9 +48,9 @@
 	      </select>
 	      <label for="floatingInput">Role</label>
 	    </div>
-	      <?php if(!empty($errors['role'])):?>
-	      <div class="text-danger"><?=$errors['role']?></div>
-	      <?php endif;?>
+        <?php if(!empty($errors['role'])):?>
+            <div class="text-danger"><?=$errors['role']?></div>
+        <?php endif;?>
 
 	    <div class="form-floating">
 	      <input value="<?=old_value('password')?>" name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
@@ -113,6 +113,14 @@
             <?php if(!empty($errors['email'])):?>
                 <div class="text-danger"><?=$errors['email']?></div>
             <?php endif;?>
+
+            <div class="form-floating my-3">
+                <select name="role" class="form-select">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <label for="floatingInput">Role</label>
+            </div>
             
             <?php if(!empty($errors['role'])):?>
                 <div class="text-danger"><?=$errors['role']?></div>
