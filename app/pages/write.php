@@ -17,8 +17,8 @@
       <nav>
         <a class="logo" href="./">Logo</a>
         <ul class="nav-links">
-          <li><a href="./">Read</a></li>
-          <li><a href="./write">Write</a></li>
+          <li><a href="./">Blogs</a></li>
+          <li><a href="./write">Write Blog</a></li>
           <?php
             session_start();   
             if (isset($_SESSION['username'])) {

@@ -11,8 +11,8 @@
 			<nav>
 				<a class="logo" href="./">Logo</a>
 				<ul class="nav-links">
-					<li><a href="./">Read</a></li>
-					<li><a href="./write">Write</a></li>
+					<li><a href="./">Blogs</a></li>
+					<li><a href="./write">Write Blog</a></li>
 					<?php
 					session_start();
 					if (isset($_SESSION['username'])) {
@@ -30,7 +30,7 @@
 	<div class="user-page">
 			<div class="user-and-articles">
 				<div class="user">
-					<?php echo '<h1>'.$_SESSION['username'].'</h1>'?>
+					<?php echo '<h1>'.$_SESSION['username'].'\'s Blogs</h1>'?>
 					<ul class="user-links">
 						<li><a href="#">Home</a></li>
 						<li><a href="#">About</a></li>
