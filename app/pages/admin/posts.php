@@ -56,7 +56,7 @@
           <option value="">--Select--</option>
           <?php if(!empty($categories)):?>
               <?php foreach($categories as $cat):?>
-                  <option><?=$cat['category']?></option>
+                  <option value="<?=$cat['id']?>"><?=$cat['category']?></option>
               <?php endforeach;?>
           <?php endif;?>
 
