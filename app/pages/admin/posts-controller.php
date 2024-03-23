@@ -57,10 +57,9 @@
 
                 $query = "insert into posts (title,content,slug,category_id,user_id) values (:title,:content,:slug,:category_id,:user_id)";
                 
-                if(!empty($destination))
-                {
-                $data['image']     = $destination;
-                $query = "insert into posts (title,content,slug,category_id,user_id,image) values (:title,:content,:slug,:category_id,:user_id,:image)";
+                if(!empty($destination)){
+                  $data['image'] = $destination;
+                  $query = "insert into posts (title,content,slug,category_id,user_id,image) values (:title,:content,:slug,:category_id,:user_id,:image)";
                 }
 
                 query($query, $data);

@@ -1,4 +1,9 @@
 <?php
+session_start();   
+//fetching the user's id from the database
+$query = "select id from users where username = :username limit 1";
+$user = query_row($query, ['username' => $_SESSION['username']]);
+
 if(!empty($_POST)){
   //validate
   $errors = [];
@@ -51,7 +56,7 @@ if(!empty($_POST)){
       $data['content']      = $new_content;
       $data['category_id']  = $_POST['category_id'];
       $data['slug']         = $slug;
-      $data['user_id']      = user('id');
+      $data['user_id']      = $user['id'];
 
       $query = "insert into posts (title,content,slug,category_id,user_id) values (:title,:content,:slug,:category_id,:user_id)";
       
@@ -90,7 +95,6 @@ if(!empty($_POST)){
           <li><a href="./">Blogs</a></li>
           <li><a href="./write">Write Blog</a></li>
           <?php
-            session_start();   
             if (isset($_SESSION['username'])) {
                 echo '<a class="circle" href="./user"></a>';
                 echo '<li><a href="./user">' . $_SESSION['username'] .'</a></li>';

@@ -109,6 +109,8 @@ session_start();
     <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="../public/assets/bootstrap-5.3.3-examples/bootstrap-5.3.3-examples/blog/blog.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../app/pages/updatePosts.js"></script>
 </head>
 
 <body>
@@ -147,8 +149,10 @@ session_start();
                 <div class="ism-caption ism-caption-0">Nature</div>
             </li>
             <li>
-                <img src="../public/assets/slider/ism/image/slides/beautiful-701678_1280.jpg">
-                <div class="ism-caption ism-caption-0">Science</div>
+                <a href="./category?category=Science">
+                    <img src="../public/assets/slider/ism/image/slides/beautiful-701678_1280.jpg">
+                    <div class="ism-caption ism-caption-0">Science</div>
+                </a>
             </li>
             <li>
                 <img src="../public/assets/slider/ism/image/slides/summer-192179_1280.jpg">
@@ -170,14 +174,19 @@ session_start();
             vulputate sapien, quis sodales leo. Aliquam vel est massa. Etiam sodales ornare massa non ullamcorper. Morbi
             venenatis imperdiet rhoncus. Cras vulputate ligula eu leo tincidunt, quis sodales lectus scelerisque. In
             laoreet, arcu et varius blandit, sem ex hendrerit libero, vel hendrerit tellus quam id quam.</p>
-        <button class="CTA" onclick="window.location.href='./login'">Get Started</button>
+            <?php
+            // Check if the user is not logged in
+            if (!isset($_SESSION['username'])) {
+                echo '<button class="CTA" onclick="window.location.href=\'./login\'">Get Started</button>';
+            }
+            ?>    
     </section>
 
     <section>
-        <h3>Trending</h3>
-        <a class="text-show" href="#">Show all</a>
+        <h3 class="pt-5 pl-5 pb-0 ">Trending</h3>
+        <!-- <a class="text-show" href="#">Show all</a> -->
 
-        <div class="blogs">
+        <!-- <div class="blogs">
             <div class="card">
                 <div class="circle-text">
                     <div class="circle-and-name">
@@ -216,13 +225,13 @@ session_start();
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="line"></div>
+        <!-- <div class="line"></div> -->
         
-        <div class="row mb-2 p-5">
+        <div id="posts-section" class="row mb-2 p-5">
             <?php 
-                $query = "select posts.*, categories.category from posts join categories on posts.category_id = categories.id order by id desc limit 6";
+                $query = "select posts.*, categories.category from posts join categories on posts.category_id = categories.id order by id desc";
                 $rows = query($query);
                 if($rows){
                     foreach($rows as $row){
@@ -235,7 +244,7 @@ session_start();
         </div>
         
         
-        <div class="blogs">
+        <!-- <div class="blogs">
             <div class="card">
                 <div class="circle-text">
                     <div class="circle-and-name">
@@ -274,7 +283,7 @@ session_start();
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div class="line"></div>
 
