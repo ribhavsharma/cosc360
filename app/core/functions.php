@@ -229,7 +229,7 @@ function get_image($file){
 	return ROOT.'/assets/images/noImage.png';
 }
 
-// create_tables();
+create_tables();
 function create_tables() {
     // define('DBUSER', "root");    
     // define('DBPASS', "");
