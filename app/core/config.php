@@ -1,6 +1,6 @@
 <?php
 
-define('ROOT', "http://localhost/cosc360/public");
+define('ROOT', "https://cosc360.ok.ubc.ca/om12345/public");
 define('APP_NAME', 'My Blog');
 
 ?>
