@@ -21,7 +21,7 @@ $rows = query($query, ['category' => $category]);
 </head>
 <body>
     <header>
-        <nav>
+        <nav class="d-flex">
             <a class="logo" href="./">Logo</a>
             <?php 
                 if(isset($_SESSION['username'])){
@@ -54,7 +54,6 @@ $rows = query($query, ['category' => $category]);
         <?php
         if($rows){
             foreach($rows as $row){
-                // Display the post in a Bootstrap card
                 echo '<div class="card mb-4">';
                 echo '<div class="card-body">';
                 echo '<h5 class="card-title">' . htmlspecialchars($row['title']) . '</h5>';
