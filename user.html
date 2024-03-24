@@ -4,25 +4,17 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" 	content="width=device-width, initial-scale=1.0">
 	<title>User page</title>
-	<link rel="stylesheet" href="./assets/css/user.css">
+	<link rel="stylesheet" href="./css/user.css">
 </head>
 <body>
 	<header>
 			<nav>
-				<a class="logo" href="./">Logo</a>
+				<div class="logo">Logo</div>
 				<ul class="nav-links">
-					<li><a href="./">Blogs</a></li>
-					<li><a href="./write">Write Blog</a></li>
-					<?php
-					session_start();
-					if (isset($_SESSION['username'])) {
-						echo '<a class="circle" href="./user"></a>';
-						echo '<li><a href="./user">' . $_SESSION['username'] .'</a></li>';
-						echo '<li><a href="./logout">Sign Out</a></li>';
-					} else {
-						echo '<li><a href="./login">Log In</a></;li>';
-					}
-					?>
+					<li><a href="#">Read</a></li>
+					<li><a href="#">Write</a></li>
+					<a class="circle" href="#"></a>
+					<li><a href="#">Om Mistry</a></li>
 				</ul>
 			</nav>
 	</header>
@@ -30,7 +22,9 @@
 	<div class="user-page">
 			<div class="user-and-articles">
 				<div class="user">
-					<?php echo '<h1>'.$_SESSION['username'].'\'s Blogs</h1>'?>
+					<h1>
+						Om Mistry
+					</h1>
 					<ul class="user-links">
 						<li><a href="#">Home</a></li>
 						<li><a href="#">About</a></li>
@@ -42,7 +36,7 @@
 						<div class="text">
 							<div class="name">
 								<a href="#"></a>
-								<?php echo '<h5>'.$_SESSION['username'].'</h5>'?>
+								<h5>Om Mistry</h5>
 							</div>
 							<article>
 								<h4>Designing for Apple Vision Pro: Lessons Learned from Puzzling Places</h4 >
@@ -59,7 +53,7 @@
 							</div>
 						</div>
 						<div class="pic">
-							<img src="./assets/images/placeholder2.jpg"/>
+							<img src="./assets/placeholder2.jpg"/>
 						</div>
 					</section>
 
@@ -69,7 +63,7 @@
 			<div class="profile">
 				<a class="circle" href="#"></a>
 				<div class="name-and-edit">
-					<?php echo '<h3>'.$_SESSION['username'].'</h3>'?>
+					<h3>Om Mistry</h3>
 					<a href="#">Edit profile</a>
 				</div>
 			</div>
