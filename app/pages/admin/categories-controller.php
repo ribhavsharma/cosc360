@@ -1,5 +1,8 @@
 <?php 
 
+$action = $_GET['action'] ?? 'view';
+$id = $_GET['id'] ?? 0;
+
 if($action == 'add'){ // add new user 
     if(!empty($_POST)){ 
         $errors = [];
@@ -29,7 +32,7 @@ if($action == 'add'){ // add new user
             $query = "insert into categories (category,slug,disabled) values (:category,:slug,:disabled)";
 
             query($query, $data);
-            redirect('./admin/categories');
+            redirect('./admin.php?section=categories');
         }
     }
 }else if($action == 'edit'){ // editing existing user
@@ -55,7 +58,7 @@ if($action == 'add'){ // add new user
                 $query = "update categories set category = :category, disabled = :disabled where id = :id limit 1";
 
                 query($query, $data);
-                    redirect('./admin/categories');
+                    redirect('./admin.php?section=categories');
             }
         }
     }      
@@ -75,7 +78,7 @@ if($action == 'add'){ // add new user
                 $query = "delete from categories where id = :id limit 1";
                 query($query, $data);
                 
-                redirect('./admin/categories');
+                redirect('./admin.php?section=categories');
             }
         }
     }      

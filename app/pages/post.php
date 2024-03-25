@@ -1,5 +1,8 @@
 <?php
 
+include __DIR__ . "/../core/functions.php";
+
+
 // Include your database connection
 session_start();
 
@@ -37,18 +40,18 @@ if (!$post) {
                         ?>
                         <ul class="nav-links">
                                 <li><a href="./">Blogs</a></li>
-                                <li><a href="./write">Write Blog</a></li>
+                                <li><a href="../pages/write.php">Write Blog</a></li>
                                 <?php
 
                                 if (isset ($_SESSION['username'])) {
-                                        echo '<a class="circle" href="./user"></a>';
-                                        echo '<li><a href="./user">' . $_SESSION['username'] . '</a></li>';
+                                        echo '<a class="circle" href="../pages/user.php"></a>';
+                                        echo '<li><a href="../pages/user.php">' . $_SESSION['username'] . '</a></li>';
                                         if ($user['role'] == 'admin') {
-                                                echo '<li><a href="./admin">Admin</a></li>';
+                                                echo '<li><a href="../pages/admin.php">Admin</a></li>';
                                         }
-                                        echo '<li><a href="./logout">Sign Out</a></li>';
+                                        echo '<li><a href="../pages/logout.php">Sign Out</a></li>';
                                 } else {
-                                        echo '<li><a href="./login">Log In</a></;li>';
+                                        echo '<li><a href="../pages/login.php">Log In</a></;li>';
                                 }
                                 ?>
                         </ul>
@@ -93,7 +96,7 @@ if (!$post) {
 
         <div class="comments mt-4 container">
                 <h3>Comments</h3>
-                <form action="add_comment" method="POST" class="mb-4">
+                <form action="add_comment.php" method="POST" class="mb-4">
                         <input type="hidden" name="post_id" value="<?php echo $post_id ?>">
                         <div class="form-group">
                                 <label for="content" class="invisible">Comment</label>

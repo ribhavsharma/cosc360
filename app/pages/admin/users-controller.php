@@ -1,4 +1,13 @@
 <?php 
+// session_start();
+
+// Get the action from the URL
+$action = $_GET['action'] ?? 'view';
+
+// Get the section from url
+$section = $_GET['section'] ?? 'dashboard';
+
+$id = $_GET['id'] ?? 0;
 
 if($action == 'add'){ // add new user 
     if(!empty($_POST)){ 
@@ -54,13 +63,13 @@ if($action == 'add'){ // add new user
             $query = "insert into users (username,email,password,role) values (:username,:email,:password,:role)";
 
             if(!empty($destination)){
-              $data['image']     = $destination;
+              $data['image'] = $destination;
               $query = "insert into users (username,email,password,role,image) values (:username,:email,:password,:role,:image)";
             }
 
             query($query, $data);
             $_SESSION['username'] = $data['username'];
-            redirect('./admin/users');
+            redirect('./admin.php?section=users');
         }
     }
 }else if($action == 'edit'){ // editing existing user
@@ -128,14 +137,14 @@ if($action == 'add'){ // add new user
 
                 if(!empty($destination)){
                   $image_str = "image = :image, ";
-                  $data['image']       = $destination;
+                  $data['image'] = $destination;
                 }
 
                 $query = "update users set username = :username, email = :email, $password_str $image_str role = :role where id = :id limit 1";
 
                 query($query, $data);
                 $_SESSION['username'] = $data['username'];
-                redirect('./admin/users');
+                redirect('./admin.php?section=users');
             }
         }
     }      
@@ -159,7 +168,7 @@ if($action == 'add'){ // add new user
                 if(file_exists($row['image']))
                     unlink($row['image']);
                 
-                redirect('./admin/users');
+                redirect('./admin.php?section=users');
             }
         }
     }      

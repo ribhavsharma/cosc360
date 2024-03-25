@@ -1,4 +1,13 @@
 <?php 
+
+// Get the action from the URL
+$action = $_GET['action'] ?? 'view';
+
+// Get the section from url
+$section = $_GET['section'] ?? 'dashboard';
+
+$id = $_GET['id'] ?? 0;
+
     if($action == 'add') //add new post
     {
         if(!empty($_POST)){
@@ -64,7 +73,7 @@
 
                 query($query, $data);
 
-                redirect('admin/posts');
+                redirect('./admin.php?section=posts');
 
             }
         }
@@ -126,7 +135,7 @@
                 $query = "update posts set title = :title, content = :content, $image_str category_id = :category_id where id = :id limit 1";
 
                 query($query, $data);
-                redirect('admin/posts');
+                redirect('./admin.php?section=posts');
 
             }
           }
@@ -151,7 +160,7 @@
               if(file_exists($row['image']))
                 unlink($row['image']);
 
-              redirect('admin/posts');
+              redirect('./admin.php?section=posts');
 
             }
           }

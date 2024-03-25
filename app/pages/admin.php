@@ -1,25 +1,37 @@
 <?php 
+    include __DIR__ . "/../core/functions.php";
+    include __DIR__ . "/../core/init.php";
+
     session_start();
     if(!logged_in()){
-        redirect('./login');
+        redirect('./login.php');
     }
 
+    // Get the section from url
+    $section = $_GET['section'] ?? 'dashboard';
 
-    $section = $url[1] ?? 'dashboard';
-    $action = $url[2] ?? 'view';
-    $id = $url[3] ??0;
+    // Get the action from the URL
+    $action = $_GET['action'] ?? 'view';
+
+    $url = $_GET['url'] ?? 'home';
+    $url = strtolower($url);
+    $url = explode('/', $url);
+
+    // $section = $url[1] ?? 'dashboard';
+    // $action = $url[2] ?? 'view';
+    // $id = $url[3] ?? 0;
     
-    $filename = "../app/pages/admin/".$section.".php";
+    $filename = __DIR__ . "\/admin/".$section.".php";
     if(!file_exists($filename)){
-        $filename = "../app/pages/admin/404.php";
+        $filename = __DIR__ . "\/admin/404.php";
     }
 
     if($section == 'users'){
-        require_once "../app/pages/admin/users-controller.php";
+        require_once __DIR__ .  "/admin/users-controller.php";
     }else if($section == 'categories'){
-        require_once "../app/pages/admin/categories-controller.php";
+        require_once __DIR__ .  "/admin/categories-controller.php";
     }else if($section == 'posts'){
-        require_once "../app/pages/admin/posts-controller.php";
+        require_once __DIR__ .  "/admin/posts-controller.php";
     }
 
     
@@ -115,25 +127,25 @@
             <ul class="nav flex-column">
             
             <li class="nav-item">
-                <a class="nav-link <?=$section =='dashboard' ? 'active':''?>" aria-current="page" href="<?=ROOT?>/admin">
+                <a class="nav-link <?=$section =='dashboard' ? 'active':''?>" aria-current="page" href="?section=dashboard">
                 <i class="bi bi-speedometer"></i> 
                 Dashboard
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?=$section =='users' ? 'active':''?>" aria-current="page" href="<?=ROOT?>/admin/users">
+                <a class="nav-link <?=$section =='users' ? 'active':''?>" aria-current="page" href="?section=users">
                 <i class="bi bi-person"></i> 
                 Users
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?=$section =='categories' ? 'active':''?>" aria-current="page" href="<?=ROOT?>/admin/categories">
+                <a class="nav-link <?=$section =='categories' ? 'active':''?>" aria-current="page" href="?section=categories">
                 <i class="bi bi-tags"></i> 
                 Categories
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?=$section =='posts' ? 'active':''?>" aria-current="page" href="<?=ROOT?>/admin/posts">
+                <a class="nav-link <?=$section =='posts' ? 'active':''?>" aria-current="page" href="?section=posts">
                 <i class="bi bi-file-post"></i> 
                 Posts
                 </a>
@@ -149,7 +161,7 @@
             </h6>
             <ul class="nav flex-column mb-2">
             <li class="nav-item">
-                <a class="nav-link" href="<?=ROOT?>">
+                <a class="nav-link" href="<?=ROOT?>/../pages/home.php">
                     <i class="bi bi-house"></i>
                     Front end
                 </a>
@@ -175,7 +187,19 @@
             </div>
 
             <?php
-                    require_once $filename;
+                    // Handle different sections
+                    if ($section == 'users') {
+                        require_once __DIR__ . "/admin/users.php";
+                    } else if ($section == 'categories') {
+                        require_once __DIR__ . "/admin/categories.php";
+                    } else if ($section == 'posts') {
+                        require_once __DIR__ . "/admin/posts.php";
+                    } else {
+                        // Default to dashboard if no valid section is specified
+                        require_once __DIR__ . "/admin/dashboard.php";
+                    }
+
+                    
             ?>
         </main>
     </div>

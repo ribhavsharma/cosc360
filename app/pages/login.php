@@ -1,5 +1,6 @@
 <?php
    session_start();
+   include __DIR__ . "/../core/functions.php";
 
    if(!empty($_POST)){
       //Signup form validation 
@@ -37,7 +38,7 @@
          $query = "insert into users (username,email,password,role) values (:username,:email,:password,:role)";
          query($query, $data);
          $_SESSION['username'] = $data['username'];
-         redirect('./home');
+         redirect('../pages/home.php');
       }
    }
 
@@ -57,10 +58,10 @@
             // Check if the user is an admin
             if ($result[0]['role'] === 'admin') {
                // If the user is an admin, redirect to the admin page
-               redirect('./admin');
+               redirect('../pages/admin.php');
             } else {
                   // If the user is not an admin, redirect to the home page
-                  redirect('./home');
+                  redirect('../pages/home.php');
             }
          }else{
             $errorsLogin['email'] = "wrong email or password";
@@ -87,7 +88,7 @@
             <a class="logo" href="./">Logo</a>
             <ul class="nav-links">
                 <li><a href="./">Blogs</a></li>
-                <li><a href="./write">Write Blog</a></li>
+                <li><a href="./write.php">Write Blog</a></li>
                 <!-- <a class="circle" href="./user"></a>
                 <li><a href="./user">Om Mistry</a></li> -->
             </ul>
@@ -105,7 +106,7 @@
                      <div class="title">Log in</div>
                      <form class="flip-card__form" method="POST">
 
-                        <?php if (!empty($errors['email'])):?>
+                        <?php if (!empty($errorsLogin['email'])):?>
                            <div class="alert alert-danger"><?=$errorsLogin['email']?></div>
                         <?php endif;?>
 

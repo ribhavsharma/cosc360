@@ -1,8 +1,21 @@
-<?php if($action == 'add'):?>
+<?php 
+include __DIR__ . "/../../core/functions.php";
+
+$PAGE = get_paginations();
+
+$url = $_GET['url'] ?? 'home';
+$url = strtolower($url);
+$url = explode('/', $url);
+
+// Get the action from the URL
+$action = $_GET['action'] ?? 'view';
+$id = $_GET['id'] ?? 0;
+
+if($action == 'add'):?>
     <div class="col-md-6 mx-auto">
 	  <form method="post" enctype="multipart/form-data">
 
-	    <h1 class="h3 mb-3 fw-normal">Create account</h1>
+	    <h1 class="h3 mb-3 fw-normal">Create Category</h1>
 
 	    <?php if (!empty($errors)):?>
 	      <div class="alert alert-danger">Please fix the errors below</div>
@@ -24,7 +37,7 @@
 	      <label for="floatingInput">Active</label>
 	    </div>
 
-	    <a href="<?=ROOT?>/admin/categories">
+	    <a href="<?=ROOT?>/../pages/admin.php?section=categories">
 		    <button class="mt-4 btn btn-lg btn-primary" type="button">Back</button>
 		</a>
 	    <button class="mt-4 btn btn-lg btn-primary float-end" type="submit">Create</button>
@@ -60,7 +73,7 @@
                 <label for="floatingInput">Active</label>
             </div>
 
-            <a href="<?=ROOT?>/admin/categories">
+            <a href="<?=ROOT?>/../pages/admin.php?section=categories">
                 <button class="mt-4 btn btn-lg btn-primary" type="button">Back</button>
             </a>
             <button class="mt-4 btn btn-lg btn-primary float-end" type="submit">Save</button>
@@ -93,7 +106,7 @@
                 <div class="text-danger"><?=$errors['slug']?></div>
             <?php endif;?>
 
-            <a href="<?=ROOT?>/admin/categories">
+            <a href="<?=ROOT?>/../pages/admin.php?section=categories">
                 <button class="mt-4 btn btn-lg btn-primary" type="button">Back</button>
             </a>
             <button class="mt-4 btn btn-lg btn-danger float-end" type="submit">Delete</button>
@@ -101,7 +114,7 @@
 	  </form>
 	</div>
 <?php else:?>
-    <h3>Categories<a href='<?=ROOT?>/admin/categories/add'><button class="btn btn-primary m-3 ">Add New Category</button></a></h3>
+    <h3>Categories<a href='?section=categories&action=add'><button class="btn btn-primary m-3 ">Add New Category</button></a></h3>
     <div class="table-responsive" >
         <table class="table">
 
@@ -125,10 +138,10 @@
                     <td><?=$row['slug']?></td>
                     <td><?=$row['disabled']?></td>
                     <td>
-                        <a href='<?=ROOT?>/admin/categories/edit/<?=$row['id']?>'>
+                        <a href='<?=ROOT?>/../pages/admin.php?section=categories&action=edit&id=<?=$row['id']?>'>
                         <button class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></button>
                         </a>
-                        <a href='<?=ROOT?>/admin/categories/delete/<?=$row['id']?>'>
+                        <a href='<?=ROOT?>/../pages/admin.php?section=categories&action=delete&id=<?=$row['id']?>'>
                         <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                         </a>
                     </td>

@@ -1,8 +1,8 @@
 <?php 
 
 //loads required files 
-require "config.php";
-require "connection.php";
-require "functions.php";
+require __DIR__ . "/config.php";
+require __DIR__ . "/connection.php";
+require __DIR__ . "/functions.php";
 
 ?>

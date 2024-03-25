@@ -3,16 +3,11 @@
 // Starting the session, to use and
 // store data in session variable
 session_start();
-  
-// If the session variable is empty, this 
-// means the user is yet to login
-// User will be sent to 'login.php' page
-// to allow the user to login
-// if (!isset($_SESSION['username'])) {
-//     echo '<p>You have to log in first</p>';
-//     redirect('./login');
-// }
-  
+
+include __DIR__ . "/../core/init.php";
+
+$id = $_GET['id'] ?? 0;
+
 ?>
 
 <!DOCTYPE html>
@@ -125,18 +120,18 @@ session_start();
             ?>
             <ul class="nav-links">
                 <li><a href="./">Blogs</a></li>
-                <li><a href="./write">Write Blog</a></li>
+                <li><a href="../pages/write.php">Write Blog</a></li>
                 <?php
                 
-                if (isset($_SESSION['username'])) {
-                    echo '<a class="circle" href="./user"></a>';
-                    echo '<li><a href="./user">' . $_SESSION['username'] .'</a></li>';
+                if (isset($_SESSION['username'])) {     
+                    echo '<a class="circle" href="../pages/user.php"></a>';
+                    echo '<li><a href="../pages/user.php">' . $_SESSION['username'] .'</a></li>';
                     if($user['role'] == 'admin') {
-                        echo '<li><a href="./admin">Admin</a></li>';
+                        echo '<li><a href="../pages/admin.php">Admin</a></li>';
                     }
-                    echo '<li><a href="./logout">Sign Out</a></li>';
+                    echo '<li><a href="../pages/logout.php">Sign Out</a></li>';
                 } else {
-                    echo '<li><a href="./login">Log In</a></;li>';
+                    echo '<li><a href="../pages/login.php">Log In</a></;li>';
                 }
                 ?>
             </ul>
@@ -149,7 +144,7 @@ session_start();
                 <div class="ism-caption ism-caption-0">Nature</div>
             </li>
             <li>
-                <a href="./category?category=Science">
+                <a href="./category.php?category=Science">
                     <img src="../public/assets/slider/ism/image/slides/beautiful-701678_1280.jpg">
                     <div class="ism-caption ism-caption-0">Science</div>
                 </a>
@@ -177,7 +172,7 @@ session_start();
             <?php
             // Check if the user is not logged in
             if (!isset($_SESSION['username'])) {
-                echo '<button class="CTA" onclick="window.location.href=\'./login\'">Get Started</button>';
+                echo '<a href="../pages/login.php"><button class="CTA">Get Started</button></a>';
             }
             ?>    
     </section>
@@ -235,7 +230,7 @@ session_start();
                 $rows = query($query);
                 if($rows){
                     foreach($rows as $row){
-                        include '../app/pages/others/post-card.php';
+                        include __DIR__ . '/others/post-card.php';
                     }
                 }else{
                     echo "No posts found";

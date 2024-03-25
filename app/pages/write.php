@@ -1,4 +1,5 @@
 <?php
+require "../core/init.php";
 session_start();   
 //fetching the user's id from the database
 $query = "select id from users where username = :username limit 1";
@@ -93,14 +94,14 @@ if(!empty($_POST)){
         <a class="logo" href="./">Logo</a>
         <ul class="nav-links">
           <li><a href="./">Blogs</a></li>
-          <li><a href="./write">Write Blog</a></li>
+          <li><a href="./write.php">Write Blog</a></li>
           <?php
             if (isset($_SESSION['username'])) {
-                echo '<a class="circle" href="./user"></a>';
-                echo '<li><a href="./user">' . $_SESSION['username'] .'</a></li>';
-                echo '<li><a href="./logout">Sign Out</a></li>';
+                echo '<a class="circle" href="./user.php"></a>';
+                echo '<li><a href="./user.php">' . $_SESSION['username'] .'</a></li>';
+                echo '<li><a href="./logout.php">Sign Out</a></li>';
             } else {
-                echo '<li><a href="./login">Log In</a></;li>';
+                echo '<li><a href="./login.php">Log In</a></;li>';
             }
           ?>
         </ul>

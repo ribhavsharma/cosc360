@@ -12,5 +12,5 @@ if (isset($_SESSION['username'])) {
 // Destroy the session
 session_destroy();
 
-redirect('./login');
+redirect('./login.php');
 ?>

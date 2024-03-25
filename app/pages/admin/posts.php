@@ -1,7 +1,22 @@
-<?php if($action == 'add'):?>
+<?php 
 
-<link rel="stylesheet" type="text/css" href="<?=ROOT?>/assets/summernote/summernote-lite.min.css">
+include __DIR__ . "/../../core/functions.php";
 
+$PAGE = get_paginations();
+
+$url = $_GET['url'] ?? 'home';
+$url = strtolower($url);
+$url = explode('/', $url);
+
+// Get the action from the URL
+$action = $_GET['action'] ?? 'view';
+
+// Get the section from url
+$section = $_GET['section'] ?? 'dashboard';
+
+$id = $_GET['id'] ?? 0;
+
+if($action == 'add'):?>
 <div class="col-md-12 mx-auto">
   <form method="post" enctype="multipart/form-data">
 
@@ -67,7 +82,7 @@
         <div class="text-danger"><?=$errors['category']?></div>
     <?php endif;?>
 
-    <a href="<?=ROOT?>/admin/posts">
+    <a href="<?=ROOT?>/../pages/admin.php?section=posts">
         <button class="mt-4 btn btn-lg btn-primary" type="button">Back</button>
     </a>
     <button class="mt-4 btn btn-lg btn-primary float-end" type="submit">Create</button>
@@ -140,7 +155,7 @@
       <div class="text-danger"><?=$errors['category']?></div>
       <?php endif;?>
 
-        <a href="<?=ROOT?>/admin/posts">
+        <a href="<?=ROOT?>/../pages/admin.php?section=posts">
             <button class="mt-4 btn btn-lg btn-primary" type="button">Back</button>
         </a>
         <button class="mt-4 btn btn-lg btn-primary  float-end" type="submit">Save</button>
@@ -180,7 +195,7 @@
           <?php endif;?>
 
 
-        <a href="<?=ROOT?>/admin/posts">
+        <a href="<?=ROOT?>/../pages/admin.php?section=posts">
             <button class="mt-4 btn btn-lg btn-primary" type="button">Back</button>
         </a>
         <button class="mt-4 btn btn-lg btn-danger  float-end" type="submit">Delete</button>
@@ -196,7 +211,7 @@
 
 <h4>
     Posts
-    <a href="<?=ROOT?>/admin/posts/add">
+    <a href="?section=posts&action=add">
         <button class="btn btn-primary">Add New</button>
     </a>
 </h4>
@@ -226,10 +241,10 @@
             </td>
             <td><?=date("jS M, Y",strtotime($row['date']))?></td>
             <td>
-                <a href="<?=ROOT?>/admin/posts/edit/<?=$row['id']?>">
+                <a href="<?=ROOT?>/../pages/admin.php?section=posts&action=edit&id=<?=$row['id']?>">
                     <button class="btn btn-warning text-white btn-sm"><i class="bi bi-pencil-square"></i></button>
                 </a>
-                <a href="<?=ROOT?>/admin/posts/delete/<?=$row['id']?>">
+                <a href="<?=ROOT?>/../pages/admin.php?section=posts&action=delete&id=<?=$row['id']?>">
                     <button class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></button>
                 </a>
             </td>

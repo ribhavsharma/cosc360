@@ -1,4 +1,23 @@
-<?php if($action == 'add'):?>
+<?php 
+// session_start();
+include __DIR__ . "/../../core/functions.php";
+
+$PAGE = get_paginations();
+
+$url = $_GET['url'] ?? 'home';
+$url = strtolower($url);
+$url = explode('/', $url);
+
+// Get the action from the URL
+$action = $_GET['action'] ?? 'view';
+
+// Get the section from url
+$section = $_GET['section'] ?? 'dashboard';
+
+$id = $_GET['id'] ?? 0;
+
+
+if($action == 'add'):?>
     <div class="col-md-6 mx-auto">
 	  <form method="post" enctype="multipart/form-data">
 
@@ -65,7 +84,7 @@
 	      <label for="floatingPassword">Password</label>
 	    </div>
 
-	    <a href="<?=ROOT?>/admin/users">
+	    <a href="<?=ROOT?>/../pages/admin.php?section=users">
 		    <button class="mt-4 btn btn-lg btn-primary" type="button">Back</button>
 		</a>
 	    <button class="mt-4 btn btn-lg btn-primary float-end" type="submit">Create</button>
@@ -139,7 +158,7 @@
                 <label for="floatingPassword">Password</label>
             </div>
 
-            <a href="<?=ROOT?>/admin/users">
+            <a href="<?=ROOT?>/../pages/admin.php?section=users">
                 <button class="mt-4 btn btn-lg btn-primary" type="button">Back</button>
             </a>
             <button class="mt-4 btn btn-lg btn-primary float-end" type="submit">Save</button>
@@ -172,7 +191,7 @@
                 <div class="text-danger"><?=$errors['email']?></div>
             <?php endif;?>
 
-            <a href="<?=ROOT?>/admin/users">
+            <a href="<?=ROOT?>/../pages/admin.php?section=users">
                 <button class="mt-4 btn btn-lg btn-primary" type="button">Back</button>
             </a>
             <button class="mt-4 btn btn-lg btn-danger float-end" type="submit">Delete</button>
@@ -180,7 +199,7 @@
 	  </form>
 	</div>
 <?php else:?>
-    <h3>Users<a href='<?=ROOT?>/admin/users/add'><button class="btn btn-primary m-3 ">Add New User</button></a></h3>
+    <h3>Users<a href='?section=users&action=add'><button class="btn btn-primary m-3 ">Add New User</button></a></h3>
     <div class="table-responsive" >
         <table class="table">
 
@@ -208,10 +227,10 @@
                     </td>
                     <td><?=date("jS M, Y", strtotime($row['date']))?></td>
                     <td>
-                        <a href='<?=ROOT?>/admin/users/edit/<?=$row['id']?>'>
+                        <a href='<?=ROOT?>/../pages/admin.php?section=users&action=edit&id=<?=$row['id']?>'>
                         <button class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></button>
                         </a>
-                        <a href='<?=ROOT?>/admin/users/delete/<?=$row['id']?>'>
+                        <a href='<?=ROOT?>/../pages/admin.php?section=users&action=delete&id=<?=$row['id']?>'>
                         <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                         </a>
                     </td>
