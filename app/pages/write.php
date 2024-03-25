@@ -31,7 +31,7 @@ if(!empty($_POST)){
 
           $destination = $folder . time() . $_FILES['image']['name'];
           move_uploaded_file($_FILES['image']['tmp_name'], $destination);
-          // resize_image($destination);
+          resize_image($destination);
       }
 
   }else{
@@ -68,7 +68,7 @@ if(!empty($_POST)){
 
       query($query, $data);
 
-      redirect('home');
+      redirect('./home.php');
 
   }
 }

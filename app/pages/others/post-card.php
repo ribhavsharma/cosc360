@@ -23,7 +23,7 @@ $id = $_GET['id'] ?? 0;
             </a>
         </div>
         <div class="col-auto d-none d-lg-block">
-            <img class="bd-placeholder-img-100" width="200" height="250" style="object-fit:cover;" src="<?=get_image($row['image'])?>">
+            <img class="bd-placeholder-img-100" width="200" height="250" style="object-fit:cover;" src="<?=ROOT?>/../pages/<?=$row['image']?>">
         </div>
     </div>
 </div> 

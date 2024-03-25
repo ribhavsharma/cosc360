@@ -105,7 +105,7 @@ $id = $_GET['id'] ?? 0;
     <!-- Custom styles for this template -->
     <link href="../public/assets/bootstrap-5.3.3-examples/bootstrap-5.3.3-examples/blog/blog.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="../app/pages/updatePosts.js"></script>
+    <script src="../pages/updatePosts.js"></script>
 </head>
 
 <body>
@@ -120,7 +120,6 @@ $id = $_GET['id'] ?? 0;
             ?>
             <ul class="nav-links">
                 <li><a href="./">Blogs</a></li>
-                <li><a href="../pages/write.php">Write Blog</a></li>
                 <?php
                 
                 if (isset($_SESSION['username'])) {     
@@ -129,6 +128,7 @@ $id = $_GET['id'] ?? 0;
                     if($user['role'] == 'admin') {
                         echo '<li><a href="../pages/admin.php">Admin</a></li>';
                     }
+                    echo '<li><a href="../pages/write.php">Write Blog</a></li>';
                     echo '<li><a href="../pages/logout.php">Sign Out</a></li>';
                 } else {
                     echo '<li><a href="../pages/login.php">Log In</a></;li>';
@@ -140,8 +140,10 @@ $id = $_GET['id'] ?? 0;
     <div class="ism-slider" data-image_fx="zoompan" id="my-slider">
         <ol>
             <li>
-                <img src="../public/assets/slider/ism/image/slides/background-2276_1280.jpg">
-                <div class="ism-caption ism-caption-0">Nature</div>
+                <a href="./category.php?category=Nature">
+                    <img src="../public/assets/slider/ism/image/slides/background-2276_1280.jpg">
+                    <div class="ism-caption ism-caption-0">Nature</div>
+                </a>
             </li>
             <li>
                 <a href="./category.php?category=Science">
@@ -150,16 +152,22 @@ $id = $_GET['id'] ?? 0;
                 </a>
             </li>
             <li>
-                <img src="../public/assets/slider/ism/image/slides/summer-192179_1280.jpg">
-                <div class="ism-caption ism-caption-0">Travel</div>
+                <a href="./category.php?category=Travel">
+                    <img src="../public/assets/slider/ism/image/slides/summer-192179_1280.jpg">
+                    <div class="ism-caption ism-caption-0">Travel</div>
+                </a>
             </li>
             <li>
-                <img src="../public/assets/slider/ism/image/slides/city-690332_1280.jpg">
-                <div class="ism-caption ism-caption-0">Daily Life</div>
+                <a href="./category.php?category=Lifestyle">
+                    <img src="../public/assets/slider/ism/image/slides/city-690332_1280.jpg">
+                    <div class="ism-caption ism-caption-0">Daily Life</div>
+                </a>
             </li>
             <li>
-                <img src="../public/assets/slider/ism/image/slides/bora-bora-685303_1280.jpg">
-                <div class="ism-caption ism-caption-0">Adventures</div>
+                <a href="./category.php?category=Adventures">
+                    <img src="../public/assets/slider/ism/image/slides/bora-bora-685303_1280.jpg">
+                    <div class="ism-caption ism-caption-0">Adventures</div>
+                </a>
             </li>
         </ol>
     </div>
@@ -226,6 +234,7 @@ $id = $_GET['id'] ?? 0;
         
         <div id="posts-section" class="row mb-2 p-5">
             <?php 
+                
                 $query = "select posts.*, categories.category from posts join categories on posts.category_id = categories.id order by id desc";
                 $rows = query($query);
                 if($rows){

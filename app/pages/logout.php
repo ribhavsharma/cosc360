@@ -1,4 +1,6 @@
 <?php
+include __DIR__ . "/../core/functions.php";
+
 session_start(); // Start the session if it's not already started
 
 if (isset($_SESSION['USER'])) {

@@ -2,7 +2,7 @@ $(document).ready(function() {
     // Function to fetch new posts
     function fetchNewPosts() {
         $.ajax({
-            url: './fetchPosts', // URL of the PHP file that fetches new posts
+            url: './fetchPosts.php', // URL of the PHP file that fetches new posts
             type: 'GET',
             success: function(data) {
                 // Update the posts on the page
