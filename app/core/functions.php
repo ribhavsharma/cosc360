@@ -341,7 +341,7 @@ if(!function_exists('create_tables')){
         $stm->execute();
 
     }
-    // create_tables();
+    create_tables();
 }
 
 
