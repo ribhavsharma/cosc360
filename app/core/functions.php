@@ -263,11 +263,6 @@ if(!function_exists('get_image')){
 
 if(!function_exists('create_tables')){
     function create_tables() {
-        // define('DBUSER', "root");    
-        // define('DBPASS', "");
-        // define('DBNAME', "myblogpost");
-        // define('DBHOST', "localhost");
-
         $string = "mysql:hostname=". DBHOST . ";";
         $con = new PDO($string, DBUSER, DBPASS);
 
