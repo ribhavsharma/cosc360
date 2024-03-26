@@ -1,5 +1,5 @@
 <?php 
-include __DIR__ . "/../../core/functions.php";
+include __DIR__ . "/../../core/init.php";
 
 $url = $_GET['url'] ?? 'home';
 $url = strtolower($url);
