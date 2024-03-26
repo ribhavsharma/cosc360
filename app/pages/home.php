@@ -111,7 +111,7 @@ $id = $_GET['id'] ?? 0;
 <body>
     <header>
         <nav>
-            <a class="logo" href="./">Logo</a>
+            <a class="logo" href="./home.php">Logo</a>
             <?php 
                 if(isset($_SESSION['username'])){
                     $query = 'select role from users where username = :username limit 1';
@@ -119,7 +119,7 @@ $id = $_GET['id'] ?? 0;
                 }
             ?>
             <ul class="nav-links">
-                <li><a href="./">Blogs</a></li>
+                <li><a href="./home.php">Blogs</a></li>
                 <?php
                 
                 if (isset($_SESSION['username'])) {     

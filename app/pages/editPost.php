@@ -91,9 +91,9 @@ if(!empty($_POST)){
   <body?>
     <header>
       <nav>
-        <a class="logo" href="./">Logo</a>
+        <a class="logo" href="./home.php">Logo</a>
         <ul class="nav-links">
-          <li><a href="./">Blogs</a></li>
+          <li><a href="./home.php">Blogs</a></li>
           <li><a href="./write.php">Write Blog</a></li>
           <?php
             if (isset($_SESSION['username'])) {

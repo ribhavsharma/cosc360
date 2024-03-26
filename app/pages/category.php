@@ -24,7 +24,7 @@ $rows = query($query, ['category' => $category]);
 <body>
     <header>
         <nav class="d-flex">
-            <a class="logo" href="./">Logo</a>
+            <a class="logo" href="./home.php">Logo</a>
             <?php 
                 if(isset($_SESSION['username'])){
                     $query = 'select role from users where username = :username limit 1';
@@ -32,7 +32,7 @@ $rows = query($query, ['category' => $category]);
                 }
             ?>
             <ul class="nav-links">
-                <li><a href="./">Blogs</a></li>
+                <li><a href="./home.php">Blogs</a></li>
                 <li><a href="./write.php">Write Blog</a></li>
                 <?php
                 
