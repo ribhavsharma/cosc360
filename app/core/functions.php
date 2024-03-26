@@ -277,7 +277,7 @@ if(!function_exists('create_tables')){
                 email varchar(100) not null,
                 password varchar(255) not null,
                 image varchar(1024) null,
-                date datetime default current_timestamp,
+                date timestamp default current_timestamp,
                 role varchar(10) not null,
 
                 key username (username),
@@ -309,7 +309,7 @@ if(!function_exists('create_tables')){
             title varchar(100) not null,
             content text null,
             image varchar(1024) null,
-            date datetime default current_timestamp,
+            date timestamp default current_timestamp,
             slug varchar(100) not null,
 
             key user_id (user_id),
@@ -327,7 +327,7 @@ if(!function_exists('create_tables')){
             post_id int,
             user_id int,
             content text not null,
-            date datetime default current_timestamp,
+            date timestamp default current_timestamp,
         
             key post_id (post_id),
             key user_id (user_id)
