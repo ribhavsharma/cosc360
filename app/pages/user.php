@@ -83,7 +83,7 @@ $posts = query($query1, ['user_id' => $user['id']]);
 								</div>
 							</div>
 							<div class="pic">
-								<img src="<?=get_image($post['image']);?>"/>
+								<img src="<?=ROOT?>/../pages/<?=$post['image']?>"/>
 							</div>
 						</section>
 					<?php endforeach; ?>

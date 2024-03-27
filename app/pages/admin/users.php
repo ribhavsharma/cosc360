@@ -106,7 +106,7 @@ if($action == 'add'):?>
 
             <div class="my-2">
                 <label class="d-block">
-                    <img class="mx-auto d-block image-preview-edit" src="<?=get_image($row['image'])?>" style="cursor: pointer;width: 150px;height: 150px;object-fit: cover;">
+                    <img class="mx-auto d-block image-preview-edit" src="<?=ROOT?>/../pages/<?=$row['image']?>" style="cursor: pointer;width: 150px;height: 150px;object-fit: cover;">
                     <input onchange="display_image_edit(this.files[0])" type='file' name='image' class="d-none">
                 </label>
 
@@ -223,7 +223,7 @@ if($action == 'add'):?>
                     <td><?=$row['email']?></td>
                     <td><?=$row['role']?></td>
                     <td>
-                        <img src="<?=get_image($row['image'])?>" style="width: 100px;height: 100px;object-fit: cover;">
+                        <img src="<?=ROOT?>/../pages/<?=$row['image']?>" style="width: 100px;height: 100px;object-fit: cover;">
                     </td>
                     <td><?=date("jS M, Y", strtotime($row['date']))?></td>
                     <td>
