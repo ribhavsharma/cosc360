@@ -61,7 +61,7 @@ if (!$post) {
         <div class="post mb-4 mt-4">
 
                 <div class="container">
-                        <a href="./" style="color: blue;">Back</a>
+                        <a href="./home.php" style="color: blue;">Back</a>
                         <div class="row mt-4 mb-4">
                                 <div class="col-md-8">
                                         <h1 class="display-4"><strong>
