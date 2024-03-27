@@ -48,7 +48,7 @@ if($action == 'add'){ // add new user
 
                 $destination = $folder . time() . $_FILES['image']['name'];
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination);
-                resize_image($destination);
+                resizeImage($destination);
             }
         }
 
@@ -74,7 +74,7 @@ if($action == 'add'){ // add new user
     }
 }else if($action == 'edit'){ // editing existing user
     $query = "select * from users where id = :id limit 1";
-    $row = query_row($query, ['id' => $id]);
+    $row = queryRow($query, ['id' => $id]);
     if(!empty($_POST)){
         $errors = [];
 
@@ -115,7 +115,7 @@ if($action == 'add'){ // add new user
                     }
                     $destination = $folder.time().$_FILES['image']['name'];
                     move_uploaded_file($_FILES['image']['tmp_name'], $destination);
-                    resize_image($destination);
+                    resizeImage($destination);
                 }
             }
     
@@ -150,7 +150,7 @@ if($action == 'add'){ // add new user
     }      
 }else if($action == 'delete'){ // editing existing user
     $query = "select * from users where id = :id limit 1";
-    $row = query_row($query, ['id' => $id]);
+    $row = queryRow($query, ['id' => $id]);
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $errors = [];
 

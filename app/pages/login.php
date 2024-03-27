@@ -110,8 +110,8 @@
                            <div class="alert alert-danger"><?=$errorsLogin['email']?></div>
                         <?php endif;?>
 
-                        <input value="<?=old_value('email')?>" class="flip-card__input" name="email" placeholder="Email" type="email">
-                        <input value="<?=old_value('password')?>" class="flip-card__input" name="password" placeholder="Password" type="password">
+                        <input value="<?=oldValue('email')?>" class="flip-card__input" name="email" placeholder="Email" type="email">
+                        <input value="<?=oldValue('password')?>" class="flip-card__input" name="password" placeholder="Password" type="password">
                         <button class="flip-card__btn" type="submit">Let`s go!</button>
                      </form>
                   </div>
@@ -121,17 +121,17 @@
                         <?php if(!empty($errors)):?>
                            <div class="alert alert-danger">Please fix the errors below</div>
                         <?php endif;?>
-                        <input value="<?=old_value('username')?>" class="flip-card__input" name="username" placeholder="Username" type="text">
+                        <input value="<?=oldValue('username')?>" class="flip-card__input" name="username" placeholder="Username" type="text">
                         <?php if(!empty($errors['username'])):?>
                            <div class="text-danger"><?=$errors['username']?></div>
                         <?php endif;?>
                         
-                        <input value="<?=old_value('email')?>" class="flip-card__input" name="email" placeholder="Email" type="email">
+                        <input value="<?=oldValue('email')?>" class="flip-card__input" name="email" placeholder="Email" type="email">
                         <?php if(!empty($errors['email'])):?>
                            <div class="text-danger"><?=$errors['email']?></div>
                         <?php endif;?>
 
-                        <input value="<?=old_value('password')?>" class="flip-card__input" name="password" placeholder="Password" type="password">
+                        <input value="<?=oldValue('password')?>" class="flip-card__input" name="password" placeholder="Password" type="password">
                         <?php if(!empty($errors['password'])):?>
                            <div class="text-danger"><?=$errors['password']?></div>
                         <?php endif;?>

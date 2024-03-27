@@ -36,14 +36,14 @@ $id = $_GET['id'] ?? 0;
 
                     $destination = $folder . time() . $_FILES['image']['name'];
                     move_uploaded_file($_FILES['image']['tmp_name'], $destination);
-                    resize_image($destination);
+                    resizeImage($destination);
                 }
 
             }else{
                 $errors['image'] = "A featured image is required";
             }
 
-            $slug = str_to_url($_POST['title']);
+            $slug = strToUrl($_POST['title']);
 
             $query = "select id from posts where slug = :slug limit 1";
             $slug_row = query($query, ['slug'=>$slug]);
@@ -80,7 +80,7 @@ $id = $_GET['id'] ?? 0;
     }else if($action == 'edit'){
         
         $query = "select * from posts where id = :id limit 1";
-        $row = query_row($query, ['id'=>$id]);
+        $row = queryRow($query, ['id'=>$id]);
 
         if(!empty($_POST)){
 
@@ -109,7 +109,7 @@ $id = $_GET['id'] ?? 0;
 
                 $destination = $folder . time() . $_FILES['image']['name'];
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination);
-                resize_image($destination);
+                resizeImage($destination);
               }
 
             }
@@ -143,7 +143,7 @@ $id = $_GET['id'] ?? 0;
     }else if($action == 'delete'){
         
         $query = "select * from posts where id = :id limit 1";
-        $row = query_row($query, ['id'=>$id]);
+        $row = queryRow($query, ['id'=>$id]);
 
         if($_SERVER['REQUEST_METHOD'] == "POST"){
           if($row){

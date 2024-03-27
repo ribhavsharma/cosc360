@@ -11,7 +11,7 @@ $id = $_GET['id'];
 
 
 $query = "select * from posts where id = :id limit 1";
-$row = query_row($query, ['id'=>$id]);
+$row = queryRow($query, ['id'=>$id]);
 
 if(!empty($_POST)){
 
@@ -40,7 +40,7 @@ if(!empty($_POST)){
 
         $destination = $folder . time() . $_FILES['image']['name'];
         move_uploaded_file($_FILES['image']['tmp_name'], $destination);
-        resize_image($destination);
+        resizeImage($destination);
       }
 
     }
@@ -122,21 +122,21 @@ if(!empty($_POST)){
             <div class="my-2">
                 <label class="d-block">
                     <img class="mx-auto d-block image-preview-edit" src="<?=ROOT?>/../pages/<?=$row['image']?>" style="cursor: pointer;width: 150px;height: 150px;object-fit: cover;">
-                    <input onchange="display_image_edit(this.files[0])" type="file" name="image" class="d-none">
+                    <input onchange="displayImageEdit(this.files[0])" type="file" name="image" class="d-none">
                 </label>
                 <?php if(!empty($errors['image'])):?>
                 <div class="text-danger"><?=$errors['image']?></div>
                 <?php endif;?>
 
                 <script>
-                    function display_image_edit(file){
+                    function displayImageEdit(file){
                         document.querySelector(".image-preview-edit").src = URL.createObjectURL(file);
                     }
                 </script>
             </div>
 
             <div class="form-floating">
-            <input value="<?=old_value('title', $row['title'])?>" name="title" type="text" class="form-control mb-2" id="floatingInput" placeholder="Username">
+            <input value="<?=oldValue('title', $row['title'])?>" name="title" type="text" class="form-control mb-2" id="floatingInput" placeholder="Username">
             <label for="floatingInput">Title</label>
             </div>
             <?php if(!empty($errors['title'])):?>
@@ -144,7 +144,7 @@ if(!empty($_POST)){
             <?php endif;?>
 
             <div class="">
-        <textarea id="summernote" rows="8" name="content" id="floatingInput" placeholder="Post content" type="content" class="form-control"><?=old_value('content',addRootToImage($row['content']))?></textarea>
+        <textarea id="summernote" rows="8" name="content" id="floatingInput" placeholder="Post content" type="content" class="form-control"><?=oldValue('content',addRootToImage($row['content']))?></textarea>
         </div>
         <?php if(!empty($errors['content'])):?>
         <div class="text-danger"><?=$errors['content']?></div>

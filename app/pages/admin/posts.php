@@ -29,8 +29,8 @@ if($action == 'add'):?>
     <div class="my-2">
         Featured Image:<br>
         <label class="d-block">
-            <img class="mx-auto d-block image-preview-edit" src="<?=get_image('')?>" style="cursor: pointer;width: 150px;height: 150px;object-fit: cover;">
-            <input onchange="display_image_edit(this.files[0])" type="file" name="image" class="d-none">
+            <img class="mx-auto d-block image-preview-edit" src="<?=getImage('')?>" style="cursor: pointer;width: 150px;height: 150px;object-fit: cover;">
+            <input onchange="displayImageEdit(this.files[0])" type="file" name="image" class="d-none">
         </label>
         <?php if(!empty($errors['image'])):?>
           <div class="text-danger"><?=$errors['image']?></div>
@@ -38,7 +38,7 @@ if($action == 'add'):?>
 
         <script>
             
-            function display_image_edit(file)
+            function displayImageEdit(file)
             {
                 document.querySelector(".image-preview-edit").src = URL.createObjectURL(file);
             }
@@ -47,7 +47,7 @@ if($action == 'add'):?>
 
 
     <div class="form-floating">
-      <input value="<?=old_value('title')?>" name="title" type="text" class="form-control mb-2" id="floatingInput" placeholder="Username">
+      <input value="<?=oldValue('title')?>" name="title" type="text" class="form-control mb-2" id="floatingInput" placeholder="Username">
       <label for="floatingInput">Title</label>
     </div>
       <?php if(!empty($errors['title'])):?>
@@ -55,7 +55,7 @@ if($action == 'add'):?>
       <?php endif;?>
 
     <div class="">
-      <textarea id="summernote" rows="8" name="content" id="floatingInput" placeholder="Post content" type="content" class="form-control"><?=old_value('content')?></textarea>
+      <textarea id="summernote" rows="8" name="content" id="floatingInput" placeholder="Post content" type="content" class="form-control"><?=oldValue('content')?></textarea>
     </div>
       <?php if(!empty($errors['content'])):?>
       <div class="text-danger"><?=$errors['content']?></div>
@@ -105,21 +105,21 @@ if($action == 'add'):?>
         <div class="my-2">
             <label class="d-block">
                 <img class="mx-auto d-block image-preview-edit" src="<?=ROOT?>/../pages/<?=$row['image']?>" style="cursor: pointer;width: 150px;height: 150px;object-fit: cover;">
-                <input onchange="display_image_edit(this.files[0])" type="file" name="image" class="d-none">
+                <input onchange="displayImageEdit(this.files[0])" type="file" name="image" class="d-none">
             </label>
             <?php if(!empty($errors['image'])):?>
               <div class="text-danger"><?=$errors['image']?></div>
             <?php endif;?>
 
             <script>
-                function display_image_edit(file){
+                function displayImageEdit(file){
                     document.querySelector(".image-preview-edit").src = URL.createObjectURL(file);
                 }
             </script>
         </div>
 
         <div class="form-floating">
-          <input value="<?=old_value('title', $row['title'])?>" name="title" type="text" class="form-control mb-2" id="floatingInput" placeholder="Username">
+          <input value="<?=oldValue('title', $row['title'])?>" name="title" type="text" class="form-control mb-2" id="floatingInput" placeholder="Username">
           <label for="floatingInput">Title</label>
         </div>
           <?php if(!empty($errors['title'])):?>
@@ -127,7 +127,7 @@ if($action == 'add'):?>
           <?php endif;?>
 
         <div class="">
-      <textarea id="summernote" rows="8" name="content" id="floatingInput" placeholder="Post content" type="content" class="form-control"><?=old_value('content',addRootToImage($row['content']))?></textarea>
+      <textarea id="summernote" rows="8" name="content" id="floatingInput" placeholder="Post content" type="content" class="form-control"><?=oldValue('content',addRootToImage($row['content']))?></textarea>
     </div>
       <?php if(!empty($errors['content'])):?>
       <div class="text-danger"><?=$errors['content']?></div>
@@ -181,14 +181,14 @@ if($action == 'add'):?>
         <?php endif;?>
 
         <div class="form-floating">
-          <div class="form-control mb-2" ><?=old_value('title', $row['title'])?></div>
+          <div class="form-control mb-2" ><?=oldValue('title', $row['title'])?></div>
         </div>
           <?php if(!empty($errors['title'])):?>
           <div class="text-danger"><?=$errors['title']?></div>
           <?php endif;?>
 
         <div class="form-floating">
-          <div class="form-control mb-2" ><?=old_value('slug', $row['slug'])?></div>
+          <div class="form-control mb-2" ><?=oldValue('slug', $row['slug'])?></div>
         </div>
           <?php if(!empty($errors['slug'])):?>
           <div class="text-danger"><?=$errors['slug']?></div>

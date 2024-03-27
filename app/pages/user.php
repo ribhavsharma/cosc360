@@ -4,7 +4,7 @@ session_start();
 
 $username = $_SESSION['username'];
 $query = "select * from users where username = :username";
-$user = query_row($query, ['username' => $username]);
+$user = queryRow($query, ['username' => $username]);
 
 $query1 = "select * from posts WHERE user_id = :user_id ORDER BY date DESC"; 
 $posts = query($query1, ['user_id' => $user['id']]);

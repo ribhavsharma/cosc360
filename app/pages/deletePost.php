@@ -9,7 +9,7 @@ $id = $_GET['id'];
 <?php 
 
     $query = "select * from posts where id = :id limit 1";
-    $row = query_row($query, ['id'=>$id]);
+    $row = queryRow($query, ['id'=>$id]);
 
     if($_SERVER['REQUEST_METHOD'] == "POST"){
         if($row){
@@ -18,13 +18,13 @@ $id = $_GET['id'];
             if(empty($errors)){
                 //delete from database
                 $data = [];
-                $data['id']       = $id;
+                $data['id'] = $id;
 
                 $query = "delete from posts where id = :id limit 1";
                 query($query, $data);
 
                 if(file_exists($row['image']))
-                unlink($row['image']);
+                  unlink($row['image']);
 
                 redirect('./user.php');
 
@@ -80,14 +80,14 @@ $id = $_GET['id'];
         <?php endif;?>
 
         <div class="form-floating">
-          <div class="form-control mb-2" ><?=old_value('title', $row['title'])?></div>
+          <div class="form-control mb-2" ><?=oldValue('title', $row['title'])?></div>
         </div>
           <?php if(!empty($errors['title'])):?>
           <div class="text-danger"><?=$errors['title']?></div>
           <?php endif;?>
 
         <div class="form-floating">
-          <div class="form-control mb-2" ><?=old_value('slug', $row['slug'])?></div>
+          <div class="form-control mb-2" ><?=oldValue('slug', $row['slug'])?></div>
         </div>
           <?php if(!empty($errors['slug'])):?>
           <div class="text-danger"><?=$errors['slug']?></div>

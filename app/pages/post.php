@@ -9,7 +9,7 @@ session_start();
 $post_id = $_GET['id']; // Get the post ID from the URL
 
 // Query the database to get the full post content using the post_id
-$post = query_row("SELECT * FROM posts WHERE id = ?", [$post_id]);
+$post = queryRow("SELECT * FROM posts WHERE id = ?", [$post_id]);
 
 if (!$post) {
         echo "Post not found!";
@@ -35,7 +35,7 @@ if (!$post) {
                         <?php
                         if (isset ($_SESSION['username'])) {
                                 $query = 'select role from users where username = :username limit 1';
-                                $user = query_row($query, ['username' => $_SESSION['username']]);
+                                $user = queryRow($query, ['username' => $_SESSION['username']]);
                         }
                         ?>
                         <ul class="nav-links">
@@ -76,7 +76,7 @@ if (!$post) {
 
                                         <?php
                                         $category_id = $post['category_id'];
-                                        $category = query_row("SELECT category FROM categories WHERE id = ?", [$category_id]);
+                                        $category = queryRow("SELECT category FROM categories WHERE id = ?", [$category_id]);
                                         if ($category) {
                                                 echo '<p class="badge badge-dark p-2">' . esc($category['category']) . '</h1>';
                                         }
@@ -114,7 +114,7 @@ if (!$post) {
                                 echo '<div class="card-body">';
                                 
                                 $user_id = $comment['user_id'];
-                                $user = query_row("SELECT username FROM users WHERE id = ?", [$user_id]);
+                                $user = queryRow("SELECT username FROM users WHERE id = ?", [$user_id]);
                                 
                                 echo '<h5 class="card-title">' . esc($user['username']) . '</h5>';
                                 echo '<p class="card-text">' . esc($comment['content']) . '</p>';

@@ -9,7 +9,7 @@
 		<?php 
 
 			$query = "select count(id) as num from users where role = 'admin'";
-			$res = query_row($query);
+			$res = queryRow($query);
 		?>
 		<h1 class="text-primary"><?=$res['num'] ?? 0?></h1>	</div>
 	
@@ -21,7 +21,7 @@
 		<?php 
 
 			$query = "select count(id) as num from users where role = 'user'";
-			$res = query_row($query);
+			$res = queryRow($query);
 		?>
 		<h1 class="text-primary"><?=$res['num'] ?? 0?></h1>	</div>
 
@@ -33,7 +33,7 @@
 		<?php 
 
 			$query = "select count(id) as num from categories";
-			$res = query_row($query);
+			$res = queryRow($query);
 		?>
 		<h1 class="text-primary"><?=$res['num'] ?? 0?></h1>	</div>
 
@@ -45,7 +45,7 @@
 		<?php 
 
 			$query = "select count(id) as num from posts";
-			$res = query_row($query);
+			$res = queryRow($query);
 		?>
 		<h1 class="text-primary"><?=$res['num'] ?? 0?></h1>
 	</div>

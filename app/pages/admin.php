@@ -3,7 +3,7 @@
     include __DIR__ . "/../core/init.php";
 
     session_start();
-    if(!logged_in()){
+    if(!loggedIn()){
         redirect('./login.php');
     }
 

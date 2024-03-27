@@ -3,10 +3,9 @@ require "../core/init.php";
 session_start();   
 //fetching the user's id from the database
 $query = "select id from users where username = :username limit 1";
-$user = query_row($query, ['username' => $_SESSION['username']]);
+$user = queryRow($query, ['username' => $_SESSION['username']]);
 
 if(!empty($_POST)){
-  //validate
   $errors = [];
 
   if(empty($_POST['title'])){
@@ -31,14 +30,14 @@ if(!empty($_POST)){
 
           $destination = $folder . time() . $_FILES['image']['name'];
           move_uploaded_file($_FILES['image']['tmp_name'], $destination);
-          resize_image($destination);
+          resizeImage($destination);
       }
 
   }else{
       $errors['image'] = "A featured image is required";
   }
 
-  $slug = str_to_url($_POST['title']);
+  $slug = strToUrl($_POST['title']);
 
   $query = "select id from posts where slug = :slug limit 1";
   $slug_row = query($query, ['slug'=>$slug]);
@@ -122,27 +121,27 @@ if(!empty($_POST)){
         <div class="my-2">
           Featured Image:<br>
           <label class="d-block">
-            <img class="mx-auto d-block image-preview-edit" src="<?=get_image('')?>" style="cursor: pointer;width: 150px;height: 150px;object-fit: cover;">
-            <input onchange="display_image_edit(this.files[0])" type="file" name="image" class="d-none">
+            <img class="mx-auto d-block image-preview-edit" src="<?=getImage('')?>" style="cursor: pointer;width: 150px;height: 150px;object-fit: cover;">
+            <input onchange="displayImageEdit(this.files[0])" type="file" name="image" class="d-none">
           </label>
           <?php if(!empty($errors['image'])):?>
             <div class="text-danger"><?=$errors['image']?></div>
           <?php endif;?>
 
           <script>
-              function display_image_edit(file){
+              function displayImageEdit(file){
                   document.querySelector(".image-preview-edit").src = URL.createObjectURL(file);
               }
           </script>
         </div>
         <div class="form-floating">
-          <input value="<?=old_value('title')?>" name="title" type="text" class="form-control mb-2" id="floatingInput" placeholder="Title">
+          <input value="<?=oldValue('title')?>" name="title" type="text" class="form-control mb-2" id="floatingInput" placeholder="Title">
           <label for="floatingInput">Title</label>
         </div>
         <?php if(!empty($errors['title'])):?>
         <div class="text-danger"><?=$errors['title']?></div>
         <?php endif;?>
-        <textarea id="summernote" rows="8" name="content" id="floatingInput" placeholder="Post content" type="content" class="form-control"><?=old_value('content')?></textarea>
+        <textarea id="summernote" rows="8" name="content" id="floatingInput" placeholder="Post content" type="content" class="form-control"><?=oldValue('content')?></textarea>
         <?php if(!empty($errors['content'])):?>
         <div class="text-danger"><?=$errors['content']?></div>
         <?php endif;?>

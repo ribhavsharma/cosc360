@@ -115,7 +115,7 @@ $id = $_GET['id'] ?? 0;
             <?php 
                 if(isset($_SESSION['username'])){
                     $query = 'select role from users where username = :username limit 1';
-                    $user = query_row($query, ['username' => $_SESSION['username']]);
+                    $user = queryRow($query, ['username' => $_SESSION['username']]);
                 }
             ?>
             <ul class="nav-links">

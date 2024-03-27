@@ -22,7 +22,7 @@ if($action == 'add'):?>
 	    <?php endif;?>
 
 	    <div class="form-floating">
-	      <input value="<?=old_value('category')?>" name="category" type="text" class="form-control mb-2" id="floatingInput" placeholder="Category">
+	      <input value="<?=oldValue('category')?>" name="category" type="text" class="form-control mb-2" id="floatingInput" placeholder="Category">
 	      <label for="floatingInput">Category</label>
 	    </div>
 	      <?php if(!empty($errors['category'])):?>
@@ -58,7 +58,7 @@ if($action == 'add'):?>
             <?php endif;?>
 
             <div class="form-floating">
-                <input value="<?=old_value('category', $row['category'])?>" name="category" type="text" class="form-control mb-2" id="floatingInput" placeholder="Category">
+                <input value="<?=oldValue('category', $row['category'])?>" name="category" type="text" class="form-control mb-2" id="floatingInput" placeholder="Category">
                 <label for="floatingInput">Category</label>
             </div>
             <?php if(!empty($errors['category'])):?>
@@ -93,14 +93,14 @@ if($action == 'add'):?>
             <?php endif;?>
 
             <div class="form-floating">
-                <div class="form-control mb-2" ><?=old_value('category', $row['category'])?></div>
+                <div class="form-control mb-2" ><?=oldValue('category', $row['category'])?></div>
             </div>
             <?php if(!empty($errors['category'])):?>
                 <div class="text-danger"><?=$errors['category']?></div>
             <?php endif;?>
 
             <div class="form-floating">
-                <div class="form-control"><?=old_value('slug', $row['slug'])?></div>
+                <div class="form-control"><?=oldValue('slug', $row['slug'])?></div>
             </div>
             <?php if(!empty($errors['slug'])):?>
                 <div class="text-danger"><?=$errors['slug']?></div>

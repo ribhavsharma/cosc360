@@ -13,7 +13,7 @@ if($action == 'add'){ // add new user
             $errors['category'] = "Category cannot have a special character that you provided";
         }
 
-        $slug = str_to_url($_POST['category']);
+        $slug = strToUrl($_POST['category']);
 
         $query = "select id from categories where slug = :slug limit 1";
         $slug_row = query($query, ['slug' => $slug]);
@@ -37,7 +37,7 @@ if($action == 'add'){ // add new user
     }
 }else if($action == 'edit'){ // editing existing user
     $query = "select * from categories where id = :id limit 1";
-    $row = query_row($query, ['id' => $id]);
+    $row = queryRow($query, ['id' => $id]);
     if(!empty($_POST)){
         $errors = [];
 
@@ -64,7 +64,7 @@ if($action == 'add'){ // add new user
     }      
 }else if($action == 'delete'){ // editing existing user
     $query = "select * from categories where id = :id limit 1";
-    $row = query_row($query, ['id' => $id]);
+    $row = queryRow($query, ['id' => $id]);
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $errors = [];
 

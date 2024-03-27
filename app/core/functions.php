@@ -20,8 +20,8 @@ if(!function_exists('query')){
     }
 }
 
-if(!function_exists('query_row')){
-    function query_row(string $query, array $data = []){
+if(!function_exists('queryRow')){
+    function queryRow(string $query, array $data = []){
         $string = "mysql:hostname=". DBHOST.";dbname=". DBNAME;
         $con = new PDO($string, DBUSER, DBPASS);
     
@@ -44,8 +44,8 @@ if(!function_exists('redirect')){
     }
 }
 
-if(!function_exists('old_value')){
-    function old_value($key, $default=''){
+if(!function_exists('oldValue')){
+    function oldValue($key, $default=''){
         if(!empty($_POST[$key]))
             return $_POST[$key];
     
@@ -59,8 +59,8 @@ if(!function_exists('authenticate')){
     }
 }
 
-if(!function_exists('logged_in')){
-    function logged_in(){
+if(!function_exists('loggedIn')){
+    function loggedIn(){
         if(!empty($_SESSION['USER']))
             return true;
     
@@ -74,8 +74,8 @@ if(!function_exists('esc')){
     }
 }
 
-if(!function_exists('str_to_url')){
-    function str_to_url($url){
+if(!function_exists('strToUrl')){
+    function strToUrl($url){
 
         $url = str_replace("'", "", $url);
         $url = preg_replace('~[^\\pL0-9_]+~u', '-', $url);
@@ -133,8 +133,8 @@ if(!function_exists('get_paginations')){
     }
 }
 
-if(!function_exists('resize_image')){
-    function resize_image($filename, $maxSize = 1000){
+if(!function_exists('resizeImage')){
+    function resizeImage($filename, $maxSize = 1000){
         if(file_exists($filename)){
             $fileType = mime_content_type($filename);
             switch($fileType){
@@ -249,8 +249,8 @@ if(!function_exists('user')){
     }
 }
 
-if(!function_exists('get_image')){
-    function get_image($file){
+if(!function_exists('getImage')){
+    function getImage($file){
         $file = $file ?? '';
         if(file_exists($file))
         {
