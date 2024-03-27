@@ -29,7 +29,7 @@ $id = $_GET['id'] ?? 0;
                 if(!in_array($_FILES['image']['type'], $allowed)){
                     $errors['image'] = "Image format not supported";
                 }else{
-                    $folder = "uploads/";
+                    $folder = __DIR__ . "\/uploads/";
                     if(!file_exists($folder)){
                         mkdir($folder, 0777, true);
                     }
