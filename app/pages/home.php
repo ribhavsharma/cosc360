@@ -5,6 +5,7 @@
 session_start();
 
 include __DIR__ . "/../core/init.php";
+require __DIR__ . "/./track.php";
 
 $id = $_GET['id'] ?? 0;
 

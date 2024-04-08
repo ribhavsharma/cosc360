@@ -1,6 +1,7 @@
 <?php
 
 include __DIR__ . "/../core/functions.php";
+require __DIR__ . "/./track.php";
 
 session_start();
 

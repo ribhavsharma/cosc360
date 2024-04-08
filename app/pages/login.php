@@ -1,6 +1,7 @@
 <?php
    session_start();
    include __DIR__ . "/../core/functions.php";
+   include __DIR__ . "/./track.php";
 
    if(!empty($_POST)){
       //Signup form validation 

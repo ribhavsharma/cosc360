@@ -1,6 +1,7 @@
 <?php 
 session_start();
 include __DIR__ . "/../core/functions.php";
+require __DIR__ . "/./track.php";
 
 $id = $_GET['id'];
 

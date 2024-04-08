@@ -1,6 +1,6 @@
 <?php 
     include __DIR__ . "/../core/functions.php";
-    include __DIR__ . "/../core/init.php";
+    include __DIR__ . "/../core/init.php";  
 
     session_start();
     if(!loggedIn()){

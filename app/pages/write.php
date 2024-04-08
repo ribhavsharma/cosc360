@@ -1,5 +1,6 @@
 <?php
 require "../core/init.php";
+require __DIR__ . "/./track.php";
 session_start();   
 //fetching the user's id from the database
 $query = "select id from users where username = :username limit 1";
@@ -40,7 +41,7 @@ if(!empty($_POST)){
   $slug = strToUrl($_POST['title']);
 
   $query = "select id from posts where slug = :slug limit 1";
-  $slug_row = query($query, ['slug'=>$slug]);
+  $slug_row = query($query, ['slug'=>$slug]); 
 
   if($slug_row){
       $slug .= rand(1000,9999);

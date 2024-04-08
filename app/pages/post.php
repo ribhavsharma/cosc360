@@ -1,7 +1,7 @@
 <?php
 
 include __DIR__ . "/../core/functions.php";
-
+require __DIR__ . "/./track.php";
 
 // Include your database connection
 session_start();
