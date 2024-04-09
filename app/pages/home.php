@@ -210,111 +210,62 @@ $id = $_GET['id'] ?? 0;
                 echo '<a href="../pages/login.php"><button class="CTA">Get Started</button></a>';
             }
             ?>    
+        <?php
+            // Fetch categories from the database
+            $query = "SELECT category FROM categories";
+            $categories = query($query);
+        ?>
+        
+        <form action="" method="GET" class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search posts..." aria-label="Search">
+            <select class=" form-control-sm  mt-2" name="category">
+                <option value="" selected>All Categories</option>
+                <?php
+                    foreach ($categories as $category) {
+                        echo '<option value="' . $category['category'] . '">' . $category['category'] . '</option>';
+                    }
+                ?>
+            </select>
+            <button class="btn btn-outline-primary mt-3 my-2 my-sm-0" type="submit">Search</button>
+        </form>
     </section>
 
     <section>
         <h3 class="pt-5 pl-5 pb-0 ">Trending</h3>
-        <!-- <a class="text-show" href="#">Show all</a> -->
-
-        <!-- <div class="blogs">
-            <div class="card">
-                <div class="circle-text">
-                    <div class="circle-and-name">
-                        <div class="circle-1"></div>
-                        <p>John Doe</p>
-                    </div>
-                    <p class="card-content">Sed dictum, massa in pharetra pellentesque, libero leo venenatis tellus.</p>
-                    <div class="card-footer ">
-                        <p>Feb 4</p><p>8 min read</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="circle-text">
-                    <div class="circle-and-name">
-                        <div class="circle-1"></div>
-                        <p>John Doe</p>
-                    </div>
-                    <p class="card-content">Sed dictum, massa in pharetra pellentesque, libero leo venenatis tellus.</p>
-                    <div class="card-footer">
-                        <p>Feb 4</p><p>8 min read</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="circle-text">
-                    <div class="circle-and-name">
-                        <div class="circle-1"></div>
-                        <p>John Doe</p>
-                    </div>
-                    <p class="card-content">Sed dictum, massa in pharetra pellentesque, libero leo venenatis tellus.</p>
-                    <div class="card-footer">
-                        <p>Feb 4</p><p>8 min read</p>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-        <!-- <div class="line"></div> -->
         
         <div id="posts-section" class="row mb-2 p-5">
             <?php 
-                
-                $query = "select posts.*, categories.category from posts join categories on posts.category_id = categories.id order by id desc";
-                $rows = query($query);
-                if($rows){
-                    foreach($rows as $row){
+                $searchTerm = $_GET['search'] ?? '';
+                $category = $_GET['category'] ?? '';
+
+                $query = "SELECT posts.*, categories.category FROM posts JOIN categories ON posts.category_id = categories.id";
+
+                $params = [];
+                if ($searchTerm !== '' && $category !== '') {
+                    $query .= " WHERE posts.title LIKE :searchTerm AND categories.category = :category";
+                    $params['searchTerm'] = '%' . $searchTerm . '%';
+                    $params['category'] = $category;
+                } elseif ($searchTerm !== '') {
+                    $query .= " WHERE posts.title LIKE :searchTerm";
+                    $params['searchTerm'] = '%' . $searchTerm . '%';
+                } elseif ($category !== '') {
+                    $query .= " WHERE categories.category = :category";
+                    $params['category'] = $category;
+                }
+
+                $query .= " ORDER BY id DESC";
+
+                $rows = query($query, $params);
+                if ($rows) {
+                    foreach ($rows as $row) {
                         include __DIR__ . '/others/post-card.php';
                     }
-                }else{
+                } else {
                     echo "No posts found";
                 }
             ?>
         </div>
         
-        
-        <!-- <div class="blogs">
-            <div class="card">
-                <div class="circle-text">
-                    <div class="circle-and-name">
-                        <div class="circle-1"></div>
-                        <p>John Doe</p>
-                    </div>
-                    <p class="card-content">Sed dictum, massa in pharetra pellentesque, libero leo venenatis tellus.</p>
-                    <div class="card-footer">
-                        <p>Feb 4</p><p>8 min read</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="circle-text">
-                    <div class="circle-and-name">
-                        <div class="circle-1"></div>
-                        <p>John Doe</p>
-                    </div>
-                    <p class="card-content">Sed dictum, massa in pharetra pellentesque, libero leo venenatis tellus.</p>
-                    <div class="card-footer">
-                        <p>Feb 4</p><p>8 min read</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="circle-text">
-                    <div class="circle-and-name">
-                        <div class="circle-1"></div>
-                        <p>John Doe</p>
-                    </div>
-                    <p class="card-content">Sed dictum, massa in pharetra pellentesque, libero leo venenatis tellus.</p>
-                    <div class="card-footer">
-                        <p>Feb 4</p><p>8 min read</p>
-                    </div>
-                </div>
-            </div>
-        </div> -->
 
         <div class="line"></div>
 
