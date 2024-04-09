@@ -96,40 +96,56 @@ if (!$post) {
 
         <div class="comments mt-4 container">
                 <h3>Comments</h3>
-                <form action="add_comment.php" method="POST" class="mb-4">
-                        <input type="hidden" name="post_id" value="<?php echo $post_id ?>">
-                        <div class="form-group">
-                                <label for="content" class="invisible">Comment</label>
-                                <textarea name="content" id="content" class="form-control" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-                <?php
-                // Query the database to get the comments for the post using the post_id
-                $comments = query("SELECT * FROM comments WHERE post_id = ?", [$post_id]);
+                <form id="commentForm" action="add_comment.php" method="POST" class="mb-4">
+    <input type="hidden" name="post_id" value="<?php echo $post_id ?>">
+    <div class="form-group">
+        <label for="content" class="invisible">Comment</label>
+        <textarea name="content" id="content" class="form-control" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
-                if ($comments) {
-                        foreach ($comments as $comment) {
-                                echo '<div class="card mb-3 w-100">';
-                                echo '<div class="card-body">';
-                                
-                                $user_id = $comment['user_id'];
-                                $user = queryRow("SELECT username FROM users WHERE id = ?", [$user_id]);
-                                
-                                echo '<h5 class="card-title">' . esc($user['username']) . '</h5>';
-                                echo '<p class="card-text">' . esc($comment['content']) . '</p>';
-                                
-                                echo '</div>';
-                                echo '</div>';
-                        }
-                } else {
-                        echo '<p>No comments yet.</p>';
-                }
-                ?>
+<div id="commentsContainer" class="comments mt-4 container">
+        <!-- Comments will be loaded here dynamically -->
+    </div>
 
-               
-        </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Function to fetch comments and update comments container
+            function fetchComments() {
+                $.ajax({
+                    type: 'GET',
+                    url: 'fetchComments.php',
+                    data: { post_id: <?php echo $post_id; ?> },
+                    success: function(response) {
+                        $('#commentsContainer').html(response);
+                    }
+                });
+            }
 
+            // Fetch comments when the page loads
+            fetchComments();
+
+            // Handler for submitting new comment (if you want to handle it asynchronously)
+            $('#commentForm').submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                var formData = $(this).serialize(); // Serialize form data
+
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    success: function(response) {
+                        // After successfully adding a new comment, fetch comments again to update the comments container
+                        console.log("added comment");
+                        fetchComments();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
