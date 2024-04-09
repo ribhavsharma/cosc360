@@ -99,6 +99,21 @@
         white-space: nowrap;
         -webkit-overflow-scrolling: touch;
         }
+        .breadcrumb {
+            background-color: #f8f9fa; /* Change the background color */
+            border-radius: .25rem; /* Add rounded corners */
+            border: 1px solid #ddd; 
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05); /* Add a subtle shadow */
+            padding: 0.75rem 1rem; /* Add some padding */
+        }
+
+        .breadcrumb a {
+            color: #007bff; /* Change the color of the links */
+        }
+
+        .breadcrumb .active {
+            color: #6c757d; /* Change the color of the active page */
+        }
     </style>
 
     
@@ -118,7 +133,7 @@
         <a class="nav-link px-3" href="./logout.php">Sign out</a>
         </div>
     </div>
-    </header>
+    </header> 
 
     <div class="container-fluid">
     <div class="row">
@@ -172,6 +187,13 @@
         </nav>
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="container my-5">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <?php echo create_breadcrumbs(); ?>
+                    </ol>
+                </nav>
+            </div> 
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Dashboard</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">

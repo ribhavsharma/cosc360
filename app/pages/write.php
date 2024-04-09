@@ -1,7 +1,7 @@
 <?php
 require "../core/init.php";
 require __DIR__ . "/./track.php";
-session_start();   
+// session_start();   
 //fetching the user's id from the database
 $query = "select id from users where username = :username limit 1";
 $user = queryRow($query, ['username' => $_SESSION['username']]);
@@ -86,6 +86,24 @@ if(!empty($_POST)){
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
+
+    <style>
+      .breadcrumb {
+          background-color: #f8f9fa; /* Change the background color */
+          border-radius: .25rem; /* Add rounded corners */
+          border: 1px solid #ddd; 
+          box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05); /* Add a subtle shadow */
+          padding: 0.75rem 1rem; /* Add some padding */
+      }
+
+      .breadcrumb a {
+          color: #007bff; /* Change the color of the links */
+      }
+
+      .breadcrumb .active {
+          color: #6c757d; /* Change the color of the active page */
+      }
+    </style>
   </head>
 
   <body>
@@ -107,6 +125,13 @@ if(!empty($_POST)){
         </ul>
       </nav>
     </header>
+    <div class="container my-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <?php echo create_breadcrumbs(); ?>
+            </ol>
+        </nav>
+    </div> 
     <section class="content">
       <h1>Write</h1>
       <p>

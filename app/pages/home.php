@@ -107,6 +107,25 @@ $id = $_GET['id'] ?? 0;
     <link href="../public/assets/bootstrap-5.3.3-examples/bootstrap-5.3.3-examples/blog/blog.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../pages/updatePosts.js"></script>
+
+
+    <style>
+    .breadcrumb {
+        background-color: #f8f9fa; /* Change the background color */
+        border-radius: .25rem; /* Add rounded corners */
+        border: 1px solid #ddd; 
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05); /* Add a subtle shadow */
+        padding: 0.75rem 1rem; /* Add some padding */
+    }
+
+    .breadcrumb a {
+        color: #007bff; /* Change the color of the links */
+    }
+
+    .breadcrumb .active {
+        color: #6c757d; /* Change the color of the active page */
+    }
+    </style>
 </head>
 
 <body>
@@ -138,6 +157,13 @@ $id = $_GET['id'] ?? 0;
             </ul>
         </nav>
     </header>
+    <div class="container my-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <?php echo create_breadcrumbs(); ?>
+            </ol>
+        </nav>
+    </div>  
     <div class="ism-slider" data-image_fx="zoompan" id="my-slider">
         <ol>
             <li>

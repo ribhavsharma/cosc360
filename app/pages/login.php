@@ -1,5 +1,5 @@
 <?php
-   session_start();
+   // session_start();
    include __DIR__ . "/../core/functions.php";
    include __DIR__ . "/./track.php";
 
@@ -81,6 +81,24 @@
     <title>Login</title>
     <link rel="stylesheet" href="../public/assets/css/login.css" />
     <link rel="stylesheet" href="../public/assets/bootstrap/css/bootstrap.min.css" />
+
+    <style>
+    .breadcrumb {
+        background-color: #f8f9fa; /* Change the background color */
+        border-radius: .25rem; /* Add rounded corners */
+        border: 1px solid #ddd; 
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05); /* Add a subtle shadow */
+        padding: 0.75rem 1rem; /* Add some padding */
+    }
+
+    .breadcrumb a {
+        color: #007bff; /* Change the color of the links */
+    }
+
+    .breadcrumb .active {
+        color: #6c757d; /* Change the color of the active page */
+    }
+    </style>
 </head>
 
 <body>   
@@ -89,12 +107,22 @@
             <a class="logo" href="./home.php">Logo</a>
             <ul class="nav-links">
                 <li><a href="./home.php">Blogs</a></li>
-                <li><a href="./write.php">Write Blog</a></li>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <li><a href="./write.php">Write Blog</a></li>
+                <?php endif; ?>
                 <!-- <a class="circle" href="./user"></a>
                 <li><a href="./user">Om Mistry</a></li> -->
             </ul>
         </nav>
-    </header>    
+    </header> 
+    
+    <div class="container my-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <?php echo create_breadcrumbs(); ?>
+            </ol>
+        </nav>
+    </div>  
 
     <div class="wrapper">
         <div class="card-switch">

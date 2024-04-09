@@ -20,6 +20,38 @@ if(!function_exists('query')){
     }
 }
 
+if(!function_exists('create_breadcrumbs')){
+    function create_breadcrumbs() {
+        $url = $_SERVER["REQUEST_URI"];
+        $urlParts = explode('/', trim($url,'/'));
+
+        $breadcrumbs = array();
+
+        $currentPage = array_pop($urlParts);
+
+        // Skip the parts until 'pages'
+        while ($urlParts && $urlParts[0] != 'pages') {
+            array_shift($urlParts);
+        }
+
+        // Remove 'pages' part
+        if ($urlParts && $urlParts[0] == 'pages') {
+            array_shift($urlParts);
+        }
+
+        $url = '';
+        foreach ($urlParts as $part) {
+            $url .= '/' . $part;
+            $breadcrumbs[] = "<a href='$url'>$part</a>";
+        }
+
+        // Remove '.php' from the current page
+        $currentPage = str_replace('.php', '', $currentPage);
+        $breadcrumbs[] = ucfirst($currentPage);
+        return implode(' / ', $breadcrumbs);
+    }
+}
+
 if(!function_exists('queryRow')){
     function queryRow(string $query, array $data = []){
         $string = "mysql:hostname=". DBHOST.";dbname=". DBNAME;

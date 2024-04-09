@@ -1,7 +1,7 @@
 <?php 
 include __DIR__ . "/../core/functions.php";
 require __DIR__ . "/./track.php";
-session_start();
+// session_start();
 
 $username = $_SESSION['username'];
 $query = "select * from users where username = :username";
@@ -25,6 +25,23 @@ $posts = query($query1, ['user_id' => $user['id']]);
 	<!-- <link href="../public/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
     <!-- <link href="../public/assets/css/bootstrap-icons.css" rel="stylesheet"> -->
 
+	<style>
+		.breadcrumb {
+			background-color: #f8f9fa; /* Change the background color */
+			border-radius: .25rem; /* Add rounded corners */
+			border: 1px solid #ddd; 
+			box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05); /* Add a subtle shadow */
+			padding: 0.75rem 1rem; /* Add some padding */
+		}
+
+		.breadcrumb a {
+			color: #007bff; /* Change the color of the links */
+		}
+
+		.breadcrumb .active {
+			color: #6c757d; /* Change the color of the active page */
+		}
+	</style>
 </head>
 <body>
 	<header>
@@ -45,6 +62,14 @@ $posts = query($query1, ['user_id' => $user['id']]);
 				</ul>
 			</nav>
 	</header>
+
+	<div class="container my-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <?php echo create_breadcrumbs(); ?>
+            </ol>
+        </nav>
+    </div>  
 
 	<div class="user-page">
 			<div class="user-and-articles">
