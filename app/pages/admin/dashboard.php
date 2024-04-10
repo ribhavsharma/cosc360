@@ -49,8 +49,16 @@ while ($row = $result->fetch_assoc()) {
     $postsData[] = $row;
 }
 
+$query = "SELECT DATE(date) as date, COUNT(*) as count FROM comments GROUP BY DATE(date)";
+$result = $conn->query($query);
+$commentsData = array();
+while ($row = $result->fetch_assoc()) {
+    $commentsData[] = $row;
+}
+
 $usersDataJson = json_encode($usersData);
 $postsDataJson = json_encode($postsData);
+$commentsDataJson = json_encode($commentsData);
 
 $conn->close();
 ?>
@@ -145,6 +153,7 @@ $conn->close();
 			<canvas id="trackingChart"></canvas>
 			<canvas id="usersChart"></canvas>
 			<canvas id="postsChart"></canvas>
+			<canvas id="commentsChart"></canvas>
 		</div>
 
 		<script>
@@ -248,6 +257,46 @@ $conn->close();
 						scaleLabel: {
 							display: true,
 							labelString: 'Number of Posts'
+						}
+					},
+					x: {
+						type: 'time',
+						time: {
+							unit: 'day'
+						},
+						scaleLabel: {
+							display: true,
+							labelString: 'Date'
+						}
+					}
+				}
+			}
+		});
+
+		var commentsCtx = document.getElementById('commentsChart').getContext('2d');
+		var commentsChart = new Chart(commentsCtx, {
+			type: 'line',
+			data: {
+				labels: <?php echo json_encode(array_column($commentsData, 'date')); ?>,
+				datasets: [{
+					label: 'Comments',
+					data: <?php echo json_encode(array_column($commentsData, 'count')); ?>,
+					backgroundColor: 'rgba(75, 192, 192, 0.2)',
+					borderColor: 'rgba(75, 192, 192, 1)',
+					borderWidth: 1
+				}]
+			},
+			options: {
+				title: {
+					display: true,
+					text: 'Comments Made'
+				},
+				scales: {
+					y: {
+						beginAtZero: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Number of Comments'
 						}
 					},
 					x: {
