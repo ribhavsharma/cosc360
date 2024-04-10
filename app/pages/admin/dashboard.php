@@ -35,6 +35,20 @@ while ($row = $result->fetch_assoc()) {
 $pageNamesJson = json_encode($pageNames);
 $visitCountsJson = json_encode($visitCounts);
 
+$query = "SELECT DATE(date) as date, COUNT(*) as count FROM users GROUP BY DATE(date)";
+$result = $conn->query($query);
+$usersData = array();
+while ($row = $result->fetch_assoc()) {
+    $usersData[] = $row;
+}
+
+$query = "SELECT DATE(date) as date, COUNT(*) as count FROM posts GROUP BY DATE(date)";
+$result = $conn->query($query);
+$postsData = array();
+while ($row = $result->fetch_assoc()) {
+    $postsData[] = $row;
+}
+
 $conn->close();
 ?>
 
@@ -46,7 +60,10 @@ $conn->close();
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
 
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-moment/1.0.1/chartjs-adapter-moment.min.js"></script>
+
 </head>
 <body>
 	<div class="row justify-content-center">
@@ -123,6 +140,8 @@ $conn->close();
 
 		<div class="container mt-5">
 			<canvas id="trackingChart"></canvas>
+			<canvas id="usersChart"></canvas>
+			<canvas id="postsChart"></canvas>
 		</div>
 
 		<script>
@@ -140,9 +159,103 @@ $conn->close();
 				}]
 			},
 			options: {
+				title: {
+					display: true,
+					text: 'Page Visits'
+				},
 				scales: {
 					y: {
-						beginAtZero: true
+						beginAtZero: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Number of Visits'
+						}
+					},
+					x: {
+						scaleLabel: {
+							display: true,
+							labelString: 'Page'
+						}
+					}
+				}
+			}
+		});
+
+		var usersCtx = document.getElementById('usersChart').getContext('2d');
+		var usersChart = new Chart(usersCtx, {
+			type: 'line',
+			data: {
+				labels: <?php echo json_encode(array_column($usersData, 'date')); ?>,
+				datasets: [{
+					label: 'Users',
+					data: <?php echo json_encode(array_column($usersData, 'count')); ?>,
+					backgroundColor: 'rgba(75, 192, 192, 0.2)',
+					borderColor: 'rgba(75, 192, 192, 1)',
+					borderWidth: 1
+				}]
+			},
+			options: {
+				title: {
+					display: true,
+					text: 'User Registrations'
+				},
+				scales: {
+					y: {
+						beginAtZero: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Number of Users'
+						}
+					},
+					x: {
+						type: 'time',
+						time: {
+							unit: 'day'
+						},
+						scaleLabel: {
+							display: true,
+							labelString: 'Date'
+						}
+					}
+				}
+			}
+		});
+
+		var postsCtx = document.getElementById('postsChart').getContext('2d');
+		var postsChart = new Chart(postsCtx, {
+			type: 'line',
+			data: {
+				labels: <?php echo json_encode(array_column($postsData, 'date')); ?>,
+				datasets: [{
+					label: 'Posts',
+					data: <?php echo json_encode(array_column($postsData, 'count')); ?>,
+					backgroundColor: 'rgba(75, 192, 192, 0.2)',
+					borderColor: 'rgba(75, 192, 192, 1)',
+					borderWidth: 1
+				}]
+			},
+			options: {
+				title: {
+					display: true,
+					text: 'Posts Created'
+				},
+				scales: {
+					y: {
+						beginAtZero: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Number of Posts'
+						}
+					},
+					x: {
+						type: 'time',
+						time: {
+							unit: 'day'
+						},
+						scaleLabel: {
+							display: true,
+							labelString: 'Date'
+						}
 					}
 				}
 			}
