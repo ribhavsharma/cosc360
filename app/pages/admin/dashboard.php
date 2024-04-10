@@ -49,6 +49,9 @@ while ($row = $result->fetch_assoc()) {
     $postsData[] = $row;
 }
 
+$usersDataJson = json_encode($usersData);
+$postsDataJson = json_encode($postsData);
+
 $conn->close();
 ?>
 
@@ -260,6 +263,7 @@ $conn->close();
 				}
 			}
 		});
+		
 		</script>
 
 
