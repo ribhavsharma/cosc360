@@ -432,7 +432,7 @@ $conn->close();
 						scaleLabel: {
 							display: true,
 							labelString: 'Date'
-						}
+						},
 						beginAtZero: true,
 						scaleLabel: {
 							display: true,
