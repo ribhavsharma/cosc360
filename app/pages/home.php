@@ -1,13 +1,20 @@
 <?php
  
-// Starting the session, to use and
-// store data in session variable
+// Starting the session, to use and store data in session variable
 session_start();
 
 include __DIR__ . "/../core/init.php";
 require __DIR__ . "/./track.php";
 
 $id = $_GET['id'] ?? 0;
+
+// Fetch the top 2 posts with the most views
+$query = "SELECT posts.*, COUNT(tracking.page) as views FROM posts LEFT JOIN tracking ON CONCAT('/cosc360%20-%20Copy/app/pages/post.php?id=', posts.id) = tracking.page GROUP BY posts.id ORDER BY views DESC LIMIT 2";
+$trending_posts = query($query);
+
+// Fetch all the other posts
+$query = "SELECT posts.*, COUNT(tracking.page) as views FROM posts LEFT JOIN tracking ON CONCAT('/cosc360%20-%20Copy/app/pages/post.php?id=', posts.id) = tracking.page LEFT JOIN (SELECT posts.id FROM posts LEFT JOIN tracking ON CONCAT('/cosc360%20-%20Copy/app/pages/post.php?id=', posts.id) = tracking.page GROUP BY posts.id ORDER BY COUNT(tracking.page) DESC LIMIT 2) as top_posts ON posts.id = top_posts.id WHERE top_posts.id IS NULL GROUP BY posts.id ORDER BY views DESC";
+$other_posts = query($query);
 
 ?>
 
@@ -18,6 +25,7 @@ $id = $_GET['id'] ?? 0;
     <title>Home</title>
     <link rel="stylesheet" href="../public/assets/css/styles.css" />
     <link rel="stylesheet" href="../public/assets/css/my-slider.css"/>
+    <link rel="stylesheet" href="../public/assets/css/modal.css"/>
     <script src="../public/assets/slider/ism/js/ism-2.2.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
@@ -149,7 +157,7 @@ $id = $_GET['id'] ?? 0;
                         echo '<li><a href="../pages/admin.php">Admin</a></li>';
                     }
                     echo '<li><a href="../pages/write.php">Write Blog</a></li>';
-                    echo '<li><a href="../pages/logout.php">Sign Out</a></li>';
+                    echo '<li><a id="sign-out-button" href="../pages/logout.php">Sign Out</a></li>';
                 } else {
                     echo '<li><a href="../pages/login.php">Log In</a></;li>';
                 }
@@ -232,8 +240,22 @@ $id = $_GET['id'] ?? 0;
 
     <section>
         <h3 class="pt-5 pl-5 pb-0 ">Trending</h3>
-        
+
         <div id="posts-section" class="row mb-2 p-5">
+            <?php
+            if ($trending_posts) {
+                foreach ($trending_posts as $row) {
+                    include __DIR__ . '/others/post-card.php';
+                }
+            } else {
+                echo "No posts found";
+            }
+            ?>
+        </div>
+        
+        <h3 class="pt-5 pl-5 pb-0 ">Blogs</h3>
+        
+        <div id="all-posts-section" class="row mb-2 p-5">
             <?php 
                 $searchTerm = $_GET['search'] ?? '';
                 $category = $_GET['category'] ?? '';
@@ -269,87 +291,54 @@ $id = $_GET['id'] ?? 0;
 
         <div class="line"></div>
 
-        <div class="box">
-            <article class="info">
-                <div class="article-card">
-                    <a class="circle-1" href="#"></a>
-                    <p>Shariar Shahrabi</p>
-                </div>
-                <p class="info-text">Designing for Apple Vision Pro: Lessons Learned from Puzzling Places</p>
-                <p class="info-text-2">The Apple Vision Pro presents new design challenges to consider.
-                    Here are some of the lessons learned from redesigning Puzzling…</p>
-                <div class="info-footer">
-                    <p>Feb 5</p><p>13 min read</p><p class="type">Category</p>
-                </div>
-            </article>
-            <img src="../public/assets/images/placeholder2.jpg">
-        </div>
-        
-        <div class="box">
-            <article class="info">
-                <div class="article-card">
-                    <a class="circle-1" href="#"></a>
-                    <p>Shariar Shahrabi</p>
-                </div>
-                <p class="info-text">Designing for Apple Vision Pro: Lessons Learned from Puzzling Places</p>
-                <p class="info-text-2">The Apple Vision Pro presents new design challenges to consider.
-                    Here are some of the lessons learned from redesigning Puzzling…</p>
-                <div class="info-footer">
-                    <p>Feb 5</p><p>13 min read</p><p class="type">Category</p>
-                </div>
-            </article>
-            <img src="../public/assets/images/placeholder.jpg">
-        </div>
-        
-        <div class="box">
-            <article class="info">
-                <div class="article-card">
-                    <a class="circle-1" href="#"></a>
-                    <p>Shariar Shahrabi</p>
-                </div>
-                <p class="info-text">Designing for Apple Vision Pro: Lessons Learned from Puzzling Places</p>
-                <p class="info-text-2">The Apple Vision Pro presents new design challenges to consider.
-                    Here are some of the lessons learned from redesigning Puzzling…</p>
-                <div class="info-footer">
-                    <p>Feb 5</p><p>13 min read</p><p class="type">Category</p>
-                </div>
-            </article>
-            <img src="../public/assets/images/placeholder.jpg">
-        </div>
-
-        <div class="box">
-            <article class="info">
-                <div class="article-card">
-                    <a class="circle-1" href="#"></a>
-                    <p>Shariar Shahrabi</p>
-                </div>
-                <p class="info-text">Designing for Apple Vision Pro: Lessons Learned from Puzzling Places</p>
-                <p class="info-text-2">The Apple Vision Pro presents new design challenges to consider.
-                    Here are some of the lessons learned from redesigning Puzzling…</p>
-                <div class="info-footer">
-                    <p>Feb 5</p><p>13 min read</p><p class="type">Category</p>
-                </div>
-            </article>
-            <img src="../public/assets/images/placeholder.jpg">
-        </div>
-
-        <div class="aside">
-            <p>Categories</p>
-            <div class="categories">
-                <a href="#" class="category">Programming</a>
-                <a href="#" class="category">Data Science</a>
-                <a href="#" class="category">Technology</a>
-                <a href="#" class="category">Self Improvement</a>
-                <a href="#" class="category">Writing</a>
-                <a href="#" class="category">Relationships</a>
-                <a href="#" class="category">Machine Learning</a>
-                <a href="#" class="category">Productivity</a>
-                <a href="#" class="category">Politics</a>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Are you sure you want to sign out?</p>
+                <button id="confirm-logout">Yes</button>
+                <button id="cancel-logout">No</button>
             </div>
-            <button class="see-more">See More Topics</button>
         </div>
-          
     </section>
+        
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+        
+        // Get the elements that open, close, confirm and cancel the modal
+        var btn = document.getElementById("sign-out-button");
+        var span = document.getElementsByClassName("close")[0];
+        var confirmBtn = document.getElementById("confirm-logout");
+        var cancelBtn = document.getElementById("cancel-logout");
+        
+        // When the user clicks the button, open the modal 
+        btn.onclick = function(event) {
+            event.preventDefault();
+            modal.style.display = "block";
+        }
+        
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        
+        // When the user clicks on confirm, redirect to logout page
+        confirmBtn.onclick = function() {
+            window.location.href = "../pages/logout.php";
+        }
+        
+        // When the user clicks on cancel, close the modal
+        cancelBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+        
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 
 </body>
 
