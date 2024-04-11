@@ -212,7 +212,6 @@ if(!empty($_POST)){
 
         <div class="actions">
           <button id="post-blog-button" type="submit">Post Blog</button>
-          <button id="post-blog-button" type="submit">Post Blog</button>
           <a href="#">Preview</a>
         </div>
       </form>
