@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('ROOT')) {
-    define('ROOT', "https://localhost/cosc360 - Copy/app/public");
+    define('ROOT', "https://cosc360.ok.ubc.ca/app/public");
 }
 
 if (!defined('APP_NAME')) {
