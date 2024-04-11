@@ -50,23 +50,41 @@ $id = $_GET['id'];
   </head>
 
   <body?>
-    <header>
-      <nav>
-        <a class="logo" href="./home.php">Logo</a>
-        <ul class="nav-links">
-          <li><a href="./home.php">Blogs</a></li>
-          <li><a href="./write.php">Write Blog</a></li>
-          <?php
-            if (isset($_SESSION['username'])) {
-                echo '<a class="circle" href="./user.php"></a>';
-                echo '<li><a href="./user.php">' . $_SESSION['username'] .'</a></li>';
-                echo '<li><a href="./logout.php">Sign Out</a></li>';
-            } else {
-                echo '<li><a href="./login.php">Log In</a></;li>';
-            }
-          ?>
-        </ul>
-      </nav>
+  <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../pages/home.php">Grasp</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                    <a class="nav-link" href="../pages/home.php">Blogs</a>
+                    </li>
+                    <?php
+                    if (isset($_SESSION['username'])) {
+                    $query = 'select role from users where username = :username limit 1';
+                    $user = queryRow($query, ['username' => $_SESSION['username']]);
+                    ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/user.php"><?php echo $_SESSION['username']; ?></a>
+                    </li>
+                    <?php
+                    if ($user['role'] == 'admin') {
+                        echo '<li class="nav-item"><a class="nav-link" href="../pages/admin.php">Admin</a></li>';
+                    }
+                    echo '<li class="nav-item"><a class="nav-link" href="../pages/write.php">Write Blog</a></li>';
+                    echo '<li class="nav-item"><a id="sign-out-button" class="nav-link" href="../pages/logout.php">Sign Out</a></li>';
+                    } else {
+                    echo '<li class="nav-item"><a class="nav-link" href="../pages/login.php">Log In</a></li>';
+                    }
+                    ?>
+                </ul>
+                </div>
+            </div>
+        </nav>
     </header>
 
     <div class="col-md-6 mx-auto">
