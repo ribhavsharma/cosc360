@@ -1,3 +1,6 @@
+// Testing the page where user can write a blog
+// Page should have a form with title, content, category, and image fields
+
 describe('Write Blog Page', () => {
   beforeEach(() => {
       cy.visit('https://localhost/cosc360%20-%20Copy/app/pages/login.php'); 
@@ -31,6 +34,7 @@ describe('Write Blog Page', () => {
       cy.get('form input[type="file"]').attachFile('placeholder2.jpg'); 
       cy.get('form button[type="submit"]').click();
 
+      // Check if the URL has changed to the home page on successful submission
       cy.url().should('include', 'https://localhost/cosc360%20-%20Copy/app/pages/home.php');
   });
 });

@@ -1,3 +1,5 @@
+// Testing that the fields for the login page work as expected.
+
 describe('Login Page', () => {
   beforeEach(() => {
       cy.visit('http://localhost/cosc360%20-%20Copy/app/pages/login.php'); 
@@ -31,6 +33,8 @@ describe('Login Page', () => {
       cy.get('.flip-card__front form input[name="password"]').type('password');
       cy.get('.flip-card__front form button[type="submit"]').click();
 
+      // Check if the URL has changed to the home page on successful login
+      cy.url().should('include', 'https://localhost/cosc360%20-%20Copy/app/pages/home.php');
   });
 
   

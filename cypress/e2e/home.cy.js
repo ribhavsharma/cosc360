@@ -1,3 +1,5 @@
+// Testing that home page contains search form, navbar, slider, and posts section.
+
 describe('Home Page', () => {
   beforeEach(() => {
       cy.visit('http://localhost/cosc360%20-%20Copy/app/public/'); 

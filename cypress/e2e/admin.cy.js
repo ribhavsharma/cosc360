@@ -1,3 +1,5 @@
+// Testing an admin's dashboard page contains some expected elements.
+
 describe('Admin Dashboard Test', () => {
   beforeEach(() => {
     cy.visit('https://localhost/cosc360%20-%20Copy/app/pages/login.php'); 

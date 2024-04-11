@@ -1,3 +1,5 @@
+// Testing the user page, and that it correctly displays posts they have made (assuming the user has made a post).
+
 describe('User Page', () => {
     beforeEach(() => {
       cy.visit('https://localhost/cosc360%20-%20Copy/app/pages/login.php'); 

@@ -1,3 +1,6 @@
+// Testing the page user sees when clicking on any post.
+// Page should have post content (img, h1, p) and comments section.
+
 describe('Posts Page', () => {
   beforeEach(() => {
       cy.visit('https://localhost/cosc360%20-%20Copy/app/pages/login.php'); 
