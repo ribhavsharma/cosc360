@@ -1,7 +1,6 @@
 <?php
  
-// Starting the session, to use and
-// store data in session variable
+// Starting the session, to use and store data in session variable
 session_start();
 
 include __DIR__ . "/../core/init.php";
@@ -26,6 +25,7 @@ $other_posts = query($query);
     <title>Home</title>
     <link rel="stylesheet" href="../public/assets/css/styles.css" />
     <link rel="stylesheet" href="../public/assets/css/my-slider.css"/>
+    <link rel="stylesheet" href="../public/assets/css/modal.css"/>
     <link rel="stylesheet" href="../public/assets/css/modal.css"/>
     <script src="../public/assets/slider/ism/js/ism-2.2.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">

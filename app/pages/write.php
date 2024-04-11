@@ -87,6 +87,7 @@ if(!empty($_POST)){
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="../public/assets/css/modal.css" />
+    <link rel="stylesheet" href="../public/assets/css/modal.css" />
 
     <style>
       .breadcrumb {
@@ -160,6 +161,7 @@ if(!empty($_POST)){
 
     <section class="editor">
       <form id="post-blog-form" method="POST" enctype="multipart/form-data">
+      <form id="post-blog-form" method="POST" enctype="multipart/form-data">
         <?php if (!empty($errors)):?>
         <div class="alert alert-danger">Please fix the errors below</div>
         <?php endif;?>  
@@ -209,6 +211,7 @@ if(!empty($_POST)){
         <?php endif;?>
 
         <div class="actions">
+          <button id="post-blog-button" type="submit">Post Blog</button>
           <button id="post-blog-button" type="submit">Post Blog</button>
           <a href="#">Preview</a>
         </div>
