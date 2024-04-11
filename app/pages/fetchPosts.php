@@ -1,6 +1,6 @@
 <?php
     include __DIR__ . '/../core/functions.php';
-    require __DIR__ . '/./track.php';
+    session_start();
 
     $query = "select posts.*, categories.category from posts join categories on posts.category_id = categories.id order by id desc";
     $rows = query($query);
