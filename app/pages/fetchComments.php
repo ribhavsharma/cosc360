@@ -1,7 +1,7 @@
 <?php
     // Include necessary files
     include __DIR__ . '/../core/functions.php';
-    require __DIR__ . '/./track.php';
+    session_start();
 
     // Check if post_id is provided
     if(isset($_GET['post_id'])) {

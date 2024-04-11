@@ -104,8 +104,8 @@
 <body>   
     <header>
         <nav>
-            <a class="logo" href="./home.php">Logo</a>
-            <ul class="nav-links">
+            <a class="logo" href="./home.php">Grasp</a>
+            <ul class="nav-links">  
                 <li><a href="./home.php">Blogs</a></li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li><a href="./write.php">Write Blog</a></li>

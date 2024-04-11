@@ -86,6 +86,7 @@ if(!empty($_POST)){
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="../public/assets/css/modal.css" />
 
     <style>
       .breadcrumb {
@@ -107,23 +108,41 @@ if(!empty($_POST)){
   </head>
 
   <body>
-    <header>
-      <nav>
-        <a class="logo" href="./home.php">Logo</a>
-        <ul class="nav-links">
-          <li><a href="./home.php">Blogs</a></li>
-          <li><a href="./write.php">Write Blog</a></li>
-          <?php
-            if (isset($_SESSION['username'])) {
-                echo '<a class="circle" href="./user.php"></a>';
-                echo '<li><a href="./user.php">' . $_SESSION['username'] .'</a></li>';
-                echo '<li><a href="./logout.php">Sign Out</a></li>';
-            } else {
-                echo '<li><a href="./login.php">Log In</a></;li>';
-            }
-          ?>
-        </ul>
-      </nav>
+  <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../pages/home.php">Grasp</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                    <a class="nav-link" href="../pages/home.php">Blogs</a>
+                    </li>
+                    <?php
+                    if (isset($_SESSION['username'])) {
+                    $query = 'select role from users where username = :username limit 1';
+                    $user = queryRow($query, ['username' => $_SESSION['username']]);
+                    ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/user.php"><?php echo $_SESSION['username']; ?></a>
+                    </li>
+                    <?php
+                    if ($user['role'] == 'admin') {
+                        echo '<li class="nav-item"><a class="nav-link" href="../pages/admin.php">Admin</a></li>';
+                    }
+                    echo '<li class="nav-item"><a class="nav-link" href="../pages/write.php">Write Blog</a></li>';
+                    echo '<li class="nav-item"><a id="sign-out-button" class="nav-link" href="../pages/logout.php">Sign Out</a></li>';
+                    } else {
+                    echo '<li class="nav-item"><a class="nav-link" href="../pages/login.php">Log In</a></li>';
+                    }
+                    ?>
+                </ul>
+                </div>
+            </div>
+        </nav>
     </header>
     <div class="container my-5">
         <nav aria-label="breadcrumb">
@@ -140,7 +159,7 @@ if(!empty($_POST)){
     </section>
 
     <section class="editor">
-      <form method="POST" enctype="multipart/form-data">
+      <form id="post-blog-form" method="POST" enctype="multipart/form-data">
         <?php if (!empty($errors)):?>
         <div class="alert alert-danger">Please fix the errors below</div>
         <?php endif;?>  
@@ -190,10 +209,111 @@ if(!empty($_POST)){
         <?php endif;?>
 
         <div class="actions">
-          <button type="submit">Post Blog</button>
+          <button id="post-blog-button" type="submit">Post Blog</button>
           <a href="#">Preview</a>
         </div>
       </form>
+
+       <!-- The Modal -->
+       <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Are you sure you want to sign out?</p>
+                <button id="confirm-logout">Yes</button>
+                <button id="cancel-logout">No</button>
+            </div>
+        </div>
+
+        <div id="overlay" class="modal">
+          <div class="modal-content">
+            <span class="close close-post">&times;</span>
+            <p>Are you sure you want to post this blog?</p>
+            <button id="confirm-post">Yes</button>
+            <button id="cancel-post">No</button>
+          </div>
+        </div>
     </section>
+        
+        <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+        
+        // Get the button that opens the modal
+        var btn = document.getElementById("sign-out-button");
+        
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+        
+        // Get the confirm and cancel buttons
+        var confirmBtn = document.getElementById("confirm-logout");
+        var cancelBtn = document.getElementById("cancel-logout");
+        
+        // When the user clicks the button, open the modal 
+        btn.onclick = function(event) {
+            event.preventDefault();
+            modal.style.display = "block";
+        }
+        
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        
+        // When the user clicks on confirm, redirect to logout page
+        confirmBtn.onclick = function() {
+            window.location.href = "../pages/logout.php";
+        }
+        
+        // When the user clicks on cancel, close the modal
+        cancelBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+        
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // When the user clicks the "Post Blog" button, show the overlay
+        var postBlogBtn = document.getElementById("post-blog-button");
+        var postBlogForm = document.getElementById("post-blog-form");
+        postBlogBtn.addEventListener("click", function(event) {
+          event.preventDefault();
+          document.getElementById("overlay").style.display = "block";
+        });
+        
+        // When the user confirms the action in the overlay, submit the form
+        var confirmPostBtn = document.getElementById("confirm-post");
+        confirmPostBtn.addEventListener("click", function() {
+          postBlogForm.submit();
+        });
+
+        // When the user clicks on cancel, close the overlay
+        var cancelPostBtn = document.getElementById("cancel-post");
+        cancelPostBtn.onclick = function() {
+          document.getElementById("overlay").style.display = "none";
+        };
+
+        // When the user clicks on <span> (x), close the overlay
+        var spanPost = document.getElementsByClassName("close-post")[0];
+        spanPost.onclick = function() {
+          document.getElementById("overlay").style.display = "none";
+        };
+        </script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="../public/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // Ensure Bootstrap JS and jQuery are included before this script
+            $(document).ready(function () {
+            // Initialize Bootstrap collapse plugin
+            $('.navbar-nav .nav-link').on('click', function () {
+                $('.navbar-collapse').collapse('hide');
+            });
+            });
+        </script>
   </body>
 </html>

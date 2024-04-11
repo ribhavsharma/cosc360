@@ -9,6 +9,14 @@ require __DIR__ . "/./track.php";
 
 $id = $_GET['id'] ?? 0;
 
+// Fetch the top 2 posts with the most views
+$query = "SELECT posts.*, COUNT(tracking.page) as views FROM posts LEFT JOIN tracking ON CONCAT('/cosc360%20-%20Copy/app/pages/post.php?id=', posts.id) = tracking.page GROUP BY posts.id ORDER BY views DESC LIMIT 2";
+$trending_posts = query($query);
+
+// Fetch all the posts excluding the top 2
+$query = "SELECT posts.*, COUNT(tracking.page) as views FROM posts LEFT JOIN tracking ON CONCAT('/cosc360%20-%20Copy/app/pages/post.php?id=', posts.id) = tracking.page LEFT JOIN (SELECT posts.id FROM posts LEFT JOIN tracking ON CONCAT('/cosc360%20-%20Copy/app/pages/post.php?id=', posts.id) = tracking.page GROUP BY posts.id ORDER BY COUNT(tracking.page) DESC LIMIT 2) as top_posts ON posts.id = top_posts.id WHERE top_posts.id IS NULL GROUP BY posts.id ORDER BY views DESC";
+$other_posts = query($query);
+
 ?>
 
 <!DOCTYPE html>
@@ -18,10 +26,12 @@ $id = $_GET['id'] ?? 0;
     <title>Home</title>
     <link rel="stylesheet" href="../public/assets/css/styles.css" />
     <link rel="stylesheet" href="../public/assets/css/my-slider.css"/>
+    <link rel="stylesheet" href="../public/assets/css/modal.css"/>
     <script src="../public/assets/slider/ism/js/ism-2.2.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
     <link href="../public/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -99,6 +109,7 @@ $id = $_GET['id'] ?? 0;
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
       }
+      
     </style>
 
     <!-- Custom styles for this template -->
@@ -130,34 +141,42 @@ $id = $_GET['id'] ?? 0;
 
 <body>
     <header>
-        <nav>
-            <a class="logo" href="../pages/home.php">Logo</a>
-            <?php 
-                if(isset($_SESSION['username'])){
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../pages/home.php">Grasp</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                    <a class="nav-link" href="../pages/home.php">Blogs</a>
+                    </li>
+                    <?php
+                    if (isset($_SESSION['username'])) {
                     $query = 'select role from users where username = :username limit 1';
                     $user = queryRow($query, ['username' => $_SESSION['username']]);
-                }
-            ?>
-            <ul class="nav-links">
-                <li><a href="../pages/home.php">Blogs</a></li>
-                <?php
-                
-                if (isset($_SESSION['username'])) {     
-                    echo '<a class="circle" href="../pages/user.php"></a>';
-                    echo '<li><a href="../pages/user.php">' . $_SESSION['username'] .'</a></li>';
-                    if($user['role'] == 'admin') {
-                        echo '<li><a href="../pages/admin.php">Admin</a></li>';
+                    ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/user.php"><?php echo $_SESSION['username']; ?></a>
+                    </li>
+                    <?php
+                    if ($user['role'] == 'admin') {
+                        echo '<li class="nav-item"><a class="nav-link" href="../pages/admin.php">Admin</a></li>';
                     }
-                    echo '<li><a href="../pages/write.php">Write Blog</a></li>';
-                    echo '<li><a href="../pages/logout.php">Sign Out</a></li>';
-                } else {
-                    echo '<li><a href="../pages/login.php">Log In</a></;li>';
-                }
-                ?>
-            </ul>
+                    echo '<li class="nav-item"><a class="nav-link" href="../pages/write.php">Write Blog</a></li>';
+                    echo '<li class="nav-item"><a id="sign-out-button" class="nav-link" href="../pages/logout.php">Sign Out</a></li>';
+                    } else {
+                    echo '<li class="nav-item"><a class="nav-link" href="../pages/login.php">Log In</a></li>';
+                    }
+                    ?>
+                </ul>
+                </div>
+            </div>
         </nav>
     </header>
-    <div class="container my-5">
+    <div class="container mx-5">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <?php echo create_breadcrumbs(); ?>
@@ -232,8 +251,22 @@ $id = $_GET['id'] ?? 0;
 
     <section>
         <h3 class="pt-5 pl-5 pb-0 ">Trending</h3>
+
+        <div id="posts-section" class="d-flex flex-wrap justify-content-between p-5">
+            <?php
+            if ($trending_posts) {
+                foreach ($trending_posts as $row) {
+                    include __DIR__ . '/others/post-card.php';
+                }
+            } else {
+                echo "No posts found";
+            }
+            ?>
+        </div>
         
-        <div id="posts-section" class="row mb-2 p-5">
+        <h3 class="pt-5 pl-5 pb-0 ">Blogs</h3>
+        
+        <div id="all-posts-section" class="d-flex flex-wrap justify-content-between p-5">
             <?php 
                 $searchTerm = $_GET['search'] ?? '';
                 $category = $_GET['category'] ?? '';
@@ -269,87 +302,95 @@ $id = $_GET['id'] ?? 0;
 
         <div class="line"></div>
 
-        <div class="box">
-            <article class="info">
-                <div class="article-card">
-                    <a class="circle-1" href="#"></a>
-                    <p>Shariar Shahrabi</p>
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to sign out?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="cancel-logout" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <a href="../pages/logout.php" id="confirm-logout" class="btn btn-primary">Yes</a>
+                    </div>
                 </div>
-                <p class="info-text">Designing for Apple Vision Pro: Lessons Learned from Puzzling Places</p>
-                <p class="info-text-2">The Apple Vision Pro presents new design challenges to consider.
-                    Here are some of the lessons learned from redesigning Puzzling…</p>
-                <div class="info-footer">
-                    <p>Feb 5</p><p>13 min read</p><p class="type">Category</p>
-                </div>
-            </article>
-            <img src="../public/assets/images/placeholder2.jpg">
-        </div>
-        
-        <div class="box">
-            <article class="info">
-                <div class="article-card">
-                    <a class="circle-1" href="#"></a>
-                    <p>Shariar Shahrabi</p>
-                </div>
-                <p class="info-text">Designing for Apple Vision Pro: Lessons Learned from Puzzling Places</p>
-                <p class="info-text-2">The Apple Vision Pro presents new design challenges to consider.
-                    Here are some of the lessons learned from redesigning Puzzling…</p>
-                <div class="info-footer">
-                    <p>Feb 5</p><p>13 min read</p><p class="type">Category</p>
-                </div>
-            </article>
-            <img src="../public/assets/images/placeholder.jpg">
-        </div>
-        
-        <div class="box">
-            <article class="info">
-                <div class="article-card">
-                    <a class="circle-1" href="#"></a>
-                    <p>Shariar Shahrabi</p>
-                </div>
-                <p class="info-text">Designing for Apple Vision Pro: Lessons Learned from Puzzling Places</p>
-                <p class="info-text-2">The Apple Vision Pro presents new design challenges to consider.
-                    Here are some of the lessons learned from redesigning Puzzling…</p>
-                <div class="info-footer">
-                    <p>Feb 5</p><p>13 min read</p><p class="type">Category</p>
-                </div>
-            </article>
-            <img src="../public/assets/images/placeholder.jpg">
-        </div>
-
-        <div class="box">
-            <article class="info">
-                <div class="article-card">
-                    <a class="circle-1" href="#"></a>
-                    <p>Shariar Shahrabi</p>
-                </div>
-                <p class="info-text">Designing for Apple Vision Pro: Lessons Learned from Puzzling Places</p>
-                <p class="info-text-2">The Apple Vision Pro presents new design challenges to consider.
-                    Here are some of the lessons learned from redesigning Puzzling…</p>
-                <div class="info-footer">
-                    <p>Feb 5</p><p>13 min read</p><p class="type">Category</p>
-                </div>
-            </article>
-            <img src="../public/assets/images/placeholder.jpg">
-        </div>
-
-        <div class="aside">
-            <p>Categories</p>
-            <div class="categories">
-                <a href="#" class="category">Programming</a>
-                <a href="#" class="category">Data Science</a>
-                <a href="#" class="category">Technology</a>
-                <a href="#" class="category">Self Improvement</a>
-                <a href="#" class="category">Writing</a>
-                <a href="#" class="category">Relationships</a>
-                <a href="#" class="category">Machine Learning</a>
-                <a href="#" class="category">Productivity</a>
-                <a href="#" class="category">Politics</a>
             </div>
-            <button class="see-more">See More Topics</button>
         </div>
-          
     </section>
+        
+    <script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("sign-out-button");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("btn-close")[0];
+    
+    // Get the confirm and cancel buttons
+    var confirmBtn = document.getElementById("confirm-logout");
+    var cancelBtn = document.getElementById("cancel-logout");
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function(event) {
+        event.preventDefault();
+        modal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks on confirm, redirect to logout page
+    confirmBtn.onclick = function() {
+        window.location.href = "../pages/logout.php";
+    }
+    
+    // When the user clicks on cancel, close the modal
+    cancelBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../public/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Ensure Bootstrap JS and jQuery are included before this script
+        $(document).ready(function () {
+        // Initialize Bootstrap collapse plugin
+        $('.navbar-nav .nav-link').on('click', function () {
+            $('.navbar-collapse').collapse('hide');
+        });
+        });
+    </script>
+
+    <script>
+    document.querySelectorAll('.read-more').forEach(function(button) {
+        button.addEventListener('click', function() {
+            var content = document.querySelector(button.getAttribute('data-target'));
+            if(content.classList.contains('show')) {
+                content.classList.remove('show');
+                content.classList.add('collapse');
+            } else {
+                content.classList.remove('collapse');
+                content.classList.add('show');
+            }
+        });
+    });
+    </script>
 
 </body>
 

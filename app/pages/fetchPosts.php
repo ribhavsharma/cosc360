@@ -1,14 +1,14 @@
 <?php
     include __DIR__ . '/../core/functions.php';
-    require __DIR__ . '/./track.php';
+    session_start();
 
-    $query = "select posts.*, categories.category from posts join categories on posts.category_id = categories.id order by id desc";
-    $rows = query($query);
+    $newestPostId = $_GET['newestPostId'] ?? 0;
+
+    $query = "SELECT posts.*, categories.category FROM posts JOIN categories ON posts.category_id = categories.id WHERE posts.id > :newestPostId ORDER BY id DESC";
+    $rows = query($query, ['newestPostId' => $newestPostId]);
     if($rows){
         foreach($rows as $row){
             include '../pages/others/post-card.php';
         }
-    }else{
-        echo "No posts found";
     }
 ?>

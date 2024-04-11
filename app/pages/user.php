@@ -10,8 +10,11 @@ $user = queryRow($query, ['username' => $username]);
 $query1 = "select * from posts WHERE user_id = :user_id ORDER BY date DESC"; 
 $posts = query($query1, ['user_id' => $user['id']]);
 
-// $query2 = "select category from categories where id = :id";
-// $categories = query($query2, ['id' => $posts['category_id']]);
+$queryPostCountByDate = "SELECT posts.date, posts.title, COUNT(*) as post_count FROM posts WHERE user_id = :user_id GROUP BY date, title ORDER BY date DESC";
+$postCountByDate = query($queryPostCountByDate, ['user_id' => $user['id']]);
+
+$queryCommentCountByDate = "SELECT comments.date, posts.title, COUNT(*) as comment_count FROM comments JOIN posts ON comments.post_id = posts.id WHERE comments.user_id = :user_id GROUP BY date, title ORDER BY date DESC";
+$commentCountByDate = query($queryCommentCountByDate, ['user_id' => $user['id']]);
 
 ?>
 
@@ -22,46 +25,98 @@ $posts = query($query1, ['user_id' => $user['id']]);
 	<meta name="viewport" 	content="width=device-width, initial-scale=1.0">
 	<title>User page</title>
 	<link rel="stylesheet" href="../public/assets/css/user.css">
-	<!-- <link href="../public/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
-    <!-- <link href="../public/assets/css/bootstrap-icons.css" rel="stylesheet"> -->
+	<link href="../public/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../public/assets/css/bootstrap-icons.css" rel="stylesheet">
 
 	<style>
 		.breadcrumb {
-			background-color: #f8f9fa; /* Change the background color */
-			border-radius: .25rem; /* Add rounded corners */
+			background-color: #f8f9fa; 
+			border-radius: .25rem; 
 			border: 1px solid #ddd; 
-			box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05); /* Add a subtle shadow */
-			padding: 0.75rem 1rem; /* Add some padding */
+			box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05); 
+			padding: 0.75rem 1rem; 
 		}
 
 		.breadcrumb a {
-			color: #007bff; /* Change the color of the links */
+			color: #007bff; 
 		}
 
 		.breadcrumb .active {
-			color: #6c757d; /* Change the color of the active page */
+			color: #6c757d; 
+		}
+
+		.user-links li {
+			margin-bottom: 10px;
+		}
+
+		.user-stats h3 {
+			margin-bottom: 20px;
+		}
+
+		.vertical-line {
+			border-left: 1px solid #ccc;
+			height: 100%;
+		}
+
+		.profile {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			padding: 20px;
+			text-align: center;
+		}
+
+		.circle {
+			width: 150px;
+			height: 150px;
+			background-color: #ccc;
+			border-radius: 50%;
+			margin-bottom: 20px;
+		}
+
+		.name-and-edit {
+			margin-bottom: 20px;
 		}
 	</style>
 </head>
 <body>
-	<header>
-			<nav>
-				<a class="logo" href="./home.php">Logo</a>
-				<ul class="nav-links">
-					<li><a href="./home.php">Blogs</a></li>
-					<li><a href="../pages/write.php">Write Blog</a></li>
-					<?php
-					if (isset($_SESSION['username'])) {
-						echo '<a class="circle" href="../pages/user.php"></a>';
-						echo '<li><a href="../pages/user.php">' . $_SESSION['username'] .'</a></li>';
-						echo '<li><a href="../pages/logout.php">Sign Out</a></li>';
-					} else {
-						echo '<li><a href="../pages/login.php">Log In</a></;li>';
-					}
-					?>
-				</ul>
-			</nav>
-	</header>
+<header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../pages/home.php">Grasp</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                    <a class="nav-link" href="../pages/home.php">Blogs</a>
+                    </li>
+                    <?php
+                    if (isset($_SESSION['username'])) {
+                    $query = 'select role from users where username = :username limit 1';
+                    $user = queryRow($query, ['username' => $_SESSION['username']]);
+                    ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/user.php"><?php echo $_SESSION['username']; ?></a>
+                    </li>
+                    <?php
+                    if ($user['role'] == 'admin') {
+                        echo '<li class="nav-item"><a class="nav-link" href="../pages/admin.php">Admin</a></li>';
+                    }
+                    echo '<li class="nav-item"><a class="nav-link" href="../pages/write.php">Write Blog</a></li>';
+                    echo '<li class="nav-item"><a id="sign-out-button" class="nav-link" href="../pages/logout.php">Sign Out</a></li>';
+                    } else {
+                    echo '<li class="nav-item"><a class="nav-link" href="../pages/login.php">Log In</a></li>';
+                    }
+                    ?>
+                </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
 	<div class="container my-5">
         <nav aria-label="breadcrumb">
@@ -81,38 +136,72 @@ $posts = query($query1, ['user_id' => $user['id']]);
 					</ul>
 				</div>
 				<hr>
-				<div class="articles">
+				<div class="articles row">
 					<?php foreach($posts as $post): ?>
-						<section class="article">
-							<div class="text">
-								<div class="name">
-									<a href="#"></a>
-									<?php echo '<h5>'.$_SESSION['username'].'</h5>'?>
-								</div>
-								<article>
-									<h2><?php echo $post['title']; ?></h2>
-									<p>
-										<?php echo $post['content']; ?>
+						<div class="col-md-6 col-lg-4 mb-4">
+							<div class="card">
+								<img src="<?=ROOT?>/../pages/<?=$post['image']?>" class="card-img-top" alt="...">
+								<div class="card-body">
+									<h5 class="card-title"><?php echo $post['title']; ?></h5>
+									<p class="card-text">
+										<?php 
+										$excerpt = substr($post['content'], 0, 100); 
+										echo $excerpt . '...'; 
+										?>
 									</p>
-								</article>
-								<div class="info">
-									<ul>
-										<li><?php echo date("jS M, Y", strtotime($post['date'])); ?></li>
-										<!-- <?php foreach($categories as $category): ?>
-											<li><?php echo $category['category']; ?></li>	
-										<?php endforeach; ?> -->
-									</ul>
-								</div>
-								<div class="post-actions">
+									<p class="card-text"><small class="text-muted"><?php echo date("jS M, Y", strtotime($post['date'])); ?></small></p>
 									<a href="./editPost.php?id=<?php echo $post['id']; ?>" class="btn btn-primary">Edit</a>
 									<a href="./deletePost.php?id=<?php echo $post['id']; ?>" class="btn btn-danger">Delete</a>
 								</div>
 							</div>
-							<div class="pic">
-								<img src="<?=ROOT?>/../pages/<?=$post['image']?>"/>
-							</div>
-						</section>
+						</div>
 					<?php endforeach; ?>
+				</div>
+				<div class="user-stats pt-4">
+					<?php echo '<h3 class="p-2">'.$_SESSION['username'].'\'s Post and Comment History</h3>'?>
+					<table class="table table-striped table-hover table-bordered">
+						<thead class="table-dark">
+							<tr>
+								<th scope="col">Date</th>
+								<th scope="col">Post Title</th>
+								<th scope="col">Posts</th>
+								<th scope="col">Comments</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+							$dates = array_merge(array_column($postCountByDate, 'date'), array_column($commentCountByDate, 'date'));
+							$dates = array_unique($dates);
+
+							foreach($dates as $date) {
+								$postCount = 0;
+								$postTitle = '';
+								foreach($postCountByDate as $post) {
+									if ($post['date'] == $date) {
+										$postCount = $post['post_count'];
+										$postTitle = $post['title'];
+										break;
+									}
+								}
+								$commentCount = 0;
+								$commentPostTitle = '';
+								foreach($commentCountByDate as $comment) {
+									if ($comment['date'] == $date) {
+										$commentCount = $comment['comment_count'];
+										$commentPostTitle = $comment['title'];
+										break;
+									}
+								}
+								echo "<tr>";
+								echo "<td>" . date("jS M, Y", strtotime($date)) . "</td>";
+								echo "<td>$postTitle / $commentPostTitle</td>";
+								echo "<td>$postCount</td>";
+								echo "<td>$commentCount</td>";
+								echo "</tr>";
+							}
+							?>
+						</tbody>
+					</table>
 				</div>
 			</div>
 			<div class="vertical-line"></div>
@@ -124,6 +213,18 @@ $posts = query($query1, ['user_id' => $user['id']]);
 				</div>
 			</div>
 	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../public/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Ensure Bootstrap JS and jQuery are included before this script
+        $(document).ready(function () {
+        // Initialize Bootstrap collapse plugin
+        $('.navbar-nav .nav-link').on('click', function () {
+            $('.navbar-collapse').collapse('hide');
+        });
+        });
+    </script>
 
 </body>
 </html>
